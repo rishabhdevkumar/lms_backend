@@ -1,10 +1,11 @@
 import { StudentService } from './student.service';
+import { QuickAddStudentDto, AuthenticateStudentDto } from './dto/student.dto';
 export declare class StudentController {
     private readonly studentService;
     constructor(studentService: StudentService);
-    quickAdd(body: any): Promise<any>;
+    quickAdd(body: QuickAddStudentDto): Promise<any>;
     add(body: any): Promise<any>;
-    authenticate(body: any): Promise<any>;
+    authenticate(body: AuthenticateStudentDto): Promise<any>;
     getAll(): Promise<any>;
     details(id: string): Promise<{
         ok: boolean;
