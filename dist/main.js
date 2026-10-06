@@ -5,6 +5,8 @@ const app_module_1 = require("./app.module");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const dotenv = require("dotenv");
+const fs = require("fs");
+const path = require("path");
 dotenv.config();
 async function bootstrap() {
     const logger = new common_1.Logger('Bootstrap');
@@ -25,10 +27,23 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api/docs', app, document);
+    app.getHttpAdapter().get('/api/docs-json', (req, res) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(document);
+    });
+    try {
+        const swaggerPath = path.resolve(process.cwd(), 'swagger.json');
+        fs.writeFileSync(swaggerPath, JSON.stringify(document, null, 2), { encoding: 'utf8' });
+        logger.log(`OpenAPI specification exported to: ${swaggerPath}`);
+    }
+    catch (err) {
+        logger.error('Failed to export swagger.json:', err);
+    }
     const port = process.env.APP_PORT || 3000;
     await app.listen(port);
     logger.log(`NestJS Application is running on port: ${port}`);
-    logger.log(`Swagger documentation available at: http://localhost:${port}/api/docs`);
+    logger.log(`Swagger documentation UI available at: http://localhost:${port}/api/docs`);
+    logger.log(`OpenAPI JSON spec available at: http://localhost:${port}/api/docs-json`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

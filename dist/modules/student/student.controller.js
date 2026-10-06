@@ -18,6 +18,7 @@ const swagger_1 = require("@nestjs/swagger");
 const student_service_1 = require("./student.service");
 const jwt_auth_guard_1 = require("../../auth/jwt-auth.guard");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+const student_dto_1 = require("./dto/student.dto");
 let StudentController = class StudentController {
     constructor(studentService) {
         this.studentService = studentService;
@@ -68,10 +69,12 @@ let StudentController = class StudentController {
 exports.StudentController = StudentController;
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Quick add student' }),
+    (0, swagger_1.ApiBody)({ type: student_dto_1.QuickAddStudentDto }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Student created successfully', type: student_dto_1.StudentResponseDto }),
     (0, common_1.Post)('quick_add'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [student_dto_1.QuickAddStudentDto]),
     __metadata("design:returntype", Promise)
 ], StudentController.prototype, "quickAdd", null);
 __decorate([
@@ -84,14 +87,17 @@ __decorate([
 ], StudentController.prototype, "add", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Authenticate student and return JWT token' }),
+    (0, swagger_1.ApiBody)({ type: student_dto_1.AuthenticateStudentDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Authentication successful', type: student_dto_1.AuthTokenResponseDto }),
     (0, common_1.Post)('authenticate'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [student_dto_1.AuthenticateStudentDto]),
     __metadata("design:returntype", Promise)
 ], StudentController.prototype, "authenticate", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get all students' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of all students', type: [student_dto_1.StudentResponseDto] }),
     (0, common_1.Post)('getall'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -99,6 +105,8 @@ __decorate([
 ], StudentController.prototype, "getAll", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get student details by ID' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'Student ID', example: '101' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Student details', type: student_dto_1.StudentResponseDto }),
     (0, common_1.Post)('details/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -169,6 +177,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiBearerAuth)('JWT-auth'),
     (0, swagger_1.ApiOperation)({ summary: 'Get logged in student profile' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Current authenticated student profile', type: student_dto_1.StudentResponseDto }),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)('get_self'),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
