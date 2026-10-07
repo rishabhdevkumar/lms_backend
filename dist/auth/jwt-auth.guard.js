@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 let JwtAuthGuard = class JwtAuthGuard {
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        const token = request.headers['authorization'] || request.headers['Authorization'];
+        let token = request.headers['authorization'] || request.headers['Authorization'];
         if (!token) {
             const response = context.switchToHttp().getResponse();
             response.status(200).json({
@@ -21,6 +21,9 @@ let JwtAuthGuard = class JwtAuthGuard {
                 msg: 'No token provided',
             });
             return false;
+        }
+        if (typeof token === 'string' && token.startsWith('Bearer ')) {
+            token = token.slice(7).trim();
         }
         try {
             const secret = process.env.TOKEN_SECRET || 'your_secret_key';

@@ -10,7 +10,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const database_module_1 = require("./database/database.module");
-const admin_module_1 = require("./modules/admin/admin.module");
+const users_module_1 = require("./modules/users/users.module");
 const agent_module_1 = require("./modules/agent/agent.module");
 const sub_agent_module_1 = require("./modules/sub-agent/sub-agent.module");
 const block_module_1 = require("./modules/block/block.module");
@@ -22,7 +22,6 @@ const country_module_1 = require("./modules/country/country.module");
 const state_module_1 = require("./modules/state/state.module");
 const destrict_module_1 = require("./modules/destrict/destrict.module");
 const course_module_1 = require("./modules/course/course.module");
-const faculty_module_1 = require("./modules/faculty/faculty.module");
 const faculty_dep_module_1 = require("./modules/faculty-dep/faculty-dep.module");
 const language_module_1 = require("./modules/language/language.module");
 const module_module_1 = require("./modules/module/module.module");
@@ -30,7 +29,6 @@ const module_tables_module_1 = require("./modules/module-tables/module-tables.mo
 const room_module_1 = require("./modules/room/room.module");
 const semester_module_1 = require("./modules/semester/semester.module");
 const session_module_1 = require("./modules/session/session.module");
-const student_module_1 = require("./modules/student/student.module");
 const subject_module_1 = require("./modules/subject/subject.module");
 const syllabus_module_1 = require("./modules/syllabus/syllabus.module");
 const timetable_module_1 = require("./modules/timetable/timetable.module");
@@ -45,7 +43,7 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
             }),
             database_module_1.DatabaseModule,
-            admin_module_1.AdminModule,
+            users_module_1.UsersModule,
             agent_module_1.AgentModule,
             sub_agent_module_1.SubAgentModule,
             block_module_1.BlockModule,
@@ -57,7 +55,6 @@ exports.AppModule = AppModule = __decorate([
             state_module_1.StateModule,
             destrict_module_1.DestrictModule,
             course_module_1.CourseModule,
-            faculty_module_1.FacultyModule,
             faculty_dep_module_1.FacultyDepModule,
             language_module_1.LanguageModule,
             module_module_1.ModuleEntityModule,
@@ -65,7 +62,6 @@ exports.AppModule = AppModule = __decorate([
             room_module_1.RoomModule,
             semester_module_1.SemesterModule,
             session_module_1.SessionModule,
-            student_module_1.StudentModule,
             subject_module_1.SubjectModule,
             syllabus_module_1.SyllabusModule,
             timetable_module_1.TimetableModule,

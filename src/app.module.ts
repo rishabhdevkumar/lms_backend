@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
-import { AdminModule } from './modules/admin/admin.module';
+import { UsersModule } from './modules/users/users.module';
 import { AgentModule } from './modules/agent/agent.module';
 import { SubAgentModule } from './modules/sub-agent/sub-agent.module';
 import { BlockModule } from './modules/block/block.module';
@@ -13,7 +13,6 @@ import { CountryModule } from './modules/country/country.module';
 import { StateModule } from './modules/state/state.module';
 import { DestrictModule } from './modules/destrict/destrict.module';
 import { CourseModule } from './modules/course/course.module';
-import { FacultyModule } from './modules/faculty/faculty.module';
 import { FacultyDepModule } from './modules/faculty-dep/faculty-dep.module';
 import { LanguageModule } from './modules/language/language.module';
 import { ModuleEntityModule } from './modules/module/module.module';
@@ -21,7 +20,6 @@ import { ModuleTablesModule } from './modules/module-tables/module-tables.module
 import { RoomModule } from './modules/room/room.module';
 import { SemesterModule } from './modules/semester/semester.module';
 import { SessionModule } from './modules/session/session.module';
-import { StudentModule } from './modules/student/student.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { SyllabusModule } from './modules/syllabus/syllabus.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
@@ -33,7 +31,7 @@ import { UniversityModule } from './modules/university/university.module';
       isGlobal: true,
     }),
     DatabaseModule,
-    AdminModule,
+    UsersModule,
     AgentModule,
     SubAgentModule,
     BlockModule,
@@ -45,7 +43,6 @@ import { UniversityModule } from './modules/university/university.module';
     StateModule,
     DestrictModule,
     CourseModule,
-    FacultyModule,
     FacultyDepModule,
     LanguageModule,
     ModuleEntityModule,
@@ -53,7 +50,6 @@ import { UniversityModule } from './modules/university/university.module';
     RoomModule,
     SemesterModule,
     SessionModule,
-    StudentModule,
     SubjectModule,
     SyllabusModule,
     TimetableModule,

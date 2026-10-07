@@ -14,7 +14,6 @@ async function bootstrap() {
 
   app.enableCors();
 
-  // Configure Swagger Documentation
   const config = new DocumentBuilder()
     .setTitle('LMS Backend API')
     .setDescription('NestJS REST API documentation for LMS Backend Management System')
@@ -35,13 +34,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  // Expose raw JSON spec endpoint for OpenAPI Generators
   app.getHttpAdapter().get('/api/docs-json', (req: any, res: any) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(document);
   });
 
-  // Save swagger.json file for offline OpenAPI generation
   try {
     const swaggerPath = path.resolve(process.cwd(), 'swagger.json');
     fs.writeFileSync(swaggerPath, JSON.stringify(document, null, 2), { encoding: 'utf8' });

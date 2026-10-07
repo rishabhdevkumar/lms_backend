@@ -16,30 +16,43 @@ class QuickAddStudentDto {
 }
 exports.QuickAddStudentDto = QuickAddStudentDto;
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'John Doe', description: 'Full name of the student' }),
+    (0, swagger_1.ApiProperty)({ example: 'John Doe', description: 'Full name of the student' }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], QuickAddStudentDto.prototype, "name", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 'john.doe@example.com', description: 'Email address of the student' }),
+    (0, swagger_1.ApiProperty)({ example: 'john.doe@example.com', description: 'Email address of the student' }),
     (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], QuickAddStudentDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: '+1234567890', description: 'Contact phone number' }),
+    (0, swagger_1.ApiProperty)({
+        example: 'Pass@1234',
+        description: 'Student password (at least 8 characters, one alphabet, one number, and one special character)',
+    }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(200),
+    (0, class_validator_1.Matches)(/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/, {
+        message: 'Password must contain at least 8 characters, one alphabet, one number and one special character',
+    }),
     __metadata("design:type", String)
-], QuickAddStudentDto.prototype, "phone", void 0);
+], QuickAddStudentDto.prototype, "password", void 0);
 class AuthenticateStudentDto {
 }
 exports.AuthenticateStudentDto = AuthenticateStudentDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'john.doe@example.com', description: 'Registered student email' }),
-    (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiPropertyOptional)({ example: 'R-2026-001', description: 'Registered student roll number' }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], AuthenticateStudentDto.prototype, "roll_no", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'john.doe@example.com', description: 'Registered student email' }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], AuthenticateStudentDto.prototype, "email", void 0);
 __decorate([

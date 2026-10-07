@@ -1,48 +1,297 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/admin/add": {
+    "/users": {
       "post": {
-        "operationId": "AdminController_addAdmin",
-        "summary": "Add a new admin",
+        "operationId": "UsersController_add",
+        "summary": "Add a new user",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "Admin"
+          "Users"
+        ]
+      },
+      "get": {
+        "operationId": "UsersController_getAll",
+        "summary": "Get all users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      },
+      "put": {
+        "operationId": "UsersController_updateRoot",
+        "summary": "Update existing user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
         ]
       }
     },
-    "/admin/authenticate": {
+    "/users/add": {
       "post": {
-        "operationId": "AdminController_authenticate",
-        "summary": "Authenticate admin and get JWT token",
+        "operationId": "UsersController_add",
+        "summary": "Add a new user",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "Admin"
+          "Users"
         ]
       }
     },
-    "/admin/getall": {
+    "/users/authenticate": {
       "post": {
-        "operationId": "AdminController_getAll",
-        "summary": "Get all admins",
+        "operationId": "UsersController_authenticate",
+        "summary": "Authenticate user and return JWT token",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateUserDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuthTokenResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "Admin"
+          "Users"
+        ]
+      }
+    },
+    "/users/getall": {
+      "get": {
+        "operationId": "UsersController_getAll",
+        "summary": "Get all users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/update": {
+      "post": {
+        "operationId": "UsersController_update",
+        "summary": "Update existing user",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/details/{id}": {
+      "get": {
+        "operationId": "UsersController_details",
+        "summary": "Get user details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "example": "1",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_details",
+        "summary": "Get user details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "User ID",
+            "schema": {
+              "example": "1",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/get_self": {
+      "get": {
+        "operationId": "UsersController_getSelf",
+        "summary": "Get logged in user profile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current authenticated user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
         ]
       }
     },
@@ -655,145 +904,6 @@
         }
       }
     },
-    "/faculty/add": {
-      "post": {
-        "operationId": "FacultyController_add",
-        "summary": "Add a new faculty member",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/getall": {
-      "post": {
-        "operationId": "FacultyController_getAll",
-        "summary": "Get all faculty members",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/search": {
-      "post": {
-        "operationId": "FacultyController_search",
-        "summary": "Search faculty members",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/update": {
-      "post": {
-        "operationId": "FacultyController_update",
-        "summary": "Update faculty details",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/authenticate": {
-      "post": {
-        "operationId": "FacultyController_authenticate",
-        "summary": "Authenticate faculty member",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/count": {
-      "post": {
-        "operationId": "FacultyController_count",
-        "summary": "Get total faculty count",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ]
-      }
-    },
-    "/faculty/get_self": {
-      "post": {
-        "operationId": "FacultyController_getSelf",
-        "summary": "Get logged in faculty profile",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ],
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ]
-      }
-    },
-    "/faculty/delete/{id}": {
-      "post": {
-        "operationId": "FacultyController_delete",
-        "summary": "Delete faculty member by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Faculty"
-        ],
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ]
-      }
-    },
     "/faculty_dep/add": {
       "post": {
         "operationId": "FacultyDepController_add",
@@ -1116,290 +1226,6 @@
         }
       }
     },
-    "/student/quick_add": {
-      "post": {
-        "operationId": "StudentController_quickAdd",
-        "summary": "Quick add student",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QuickAddStudentDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Student created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StudentResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/add": {
-      "post": {
-        "operationId": "StudentController_add",
-        "summary": "Full add student",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/authenticate": {
-      "post": {
-        "operationId": "StudentController_authenticate",
-        "summary": "Authenticate student and return JWT token",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthenticateStudentDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Authentication successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthTokenResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/getall": {
-      "post": {
-        "operationId": "StudentController_getAll",
-        "summary": "Get all students",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "List of all students",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/StudentResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/details/{id}": {
-      "post": {
-        "operationId": "StudentController_details",
-        "summary": "Get student details by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "description": "Student ID",
-            "schema": {
-              "example": "101",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Student details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StudentResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/update": {
-      "post": {
-        "operationId": "StudentController_update",
-        "summary": "Update student information",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/search": {
-      "post": {
-        "operationId": "StudentController_search",
-        "summary": "Search students",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/update_language": {
-      "post": {
-        "operationId": "StudentController_updateLanguage",
-        "summary": "Update student language preference",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/update_email": {
-      "post": {
-        "operationId": "StudentController_updateEmail",
-        "summary": "Update student email",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/update_password": {
-      "post": {
-        "operationId": "StudentController_updatePassword",
-        "summary": "Update student password",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/count": {
-      "post": {
-        "operationId": "StudentController_count",
-        "summary": "Get total student count",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/getnextid": {
-      "post": {
-        "operationId": "StudentController_getNextId",
-        "summary": "Get next available student ID",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/getnextrollno": {
-      "post": {
-        "operationId": "StudentController_getNextRollNo",
-        "summary": "Get next available student roll number",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Student"
-        ]
-      }
-    },
-    "/student/get_self": {
-      "post": {
-        "operationId": "StudentController_getSelf",
-        "summary": "Get logged in student profile",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Current authenticated student profile",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StudentResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Student"
-        ],
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ]
-      }
-    },
     "/subject/add": {
       "post": {
         "operationId": "SubjectController_add",
@@ -1582,68 +1408,84 @@
       }
     },
     "schemas": {
-      "QuickAddStudentDto": {
+      "AddUserDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
             "example": "John Doe",
-            "description": "Full name of the student"
+            "description": "Full name of the user"
           },
           "email": {
             "type": "string",
             "example": "john.doe@example.com",
-            "description": "Email address of the student"
+            "description": "Email address of the user"
           },
-          "phone": {
+          "password": {
             "type": "string",
-            "example": "+1234567890",
-            "description": "Contact phone number"
+            "example": "Pass@1234",
+            "description": "User password (at least 8 characters, one alphabet, one number, and one special character)"
+          },
+          "role": {
+            "type": "string",
+            "example": "student",
+            "enum": [
+              "student",
+              "faculty",
+              "admin"
+            ],
+            "description": "User role"
           }
-        }
+        },
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
       },
-      "StudentResponseDto": {
+      "UserResponseDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "example": "101",
-            "description": "Unique student identifier"
+            "example": "1",
+            "description": "Unique user identifier"
+          },
+          "roll_no": {
+            "type": "string",
+            "example": "STU001",
+            "description": "User roll number"
           },
           "name": {
             "type": "string",
             "example": "John Doe",
-            "description": "Student full name"
+            "description": "User full name"
           },
           "email": {
             "type": "string",
             "example": "john.doe@example.com",
-            "description": "Student email"
-          },
-          "rollNo": {
-            "type": "string",
-            "example": "R-2026-001",
-            "description": "Student roll number"
+            "description": "User email"
           }
         },
         "required": [
           "id",
+          "roll_no",
           "name",
           "email"
         ]
       },
-      "AuthenticateStudentDto": {
+      "AuthenticateUserDto": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
             "example": "john.doe@example.com",
-            "description": "Registered student email"
+            "description": "User email or roll number"
           },
           "password": {
             "type": "string",
-            "example": "secret123",
-            "description": "Account password"
+            "example": "Pass@1234",
+            "description": "User password"
           }
         },
         "required": [
@@ -1651,7 +1493,7 @@
           "password"
         ]
       },
-      "AuthTokenResponseDto": {
+      "UserAuthTokenResponseDto": {
         "type": "object",
         "properties": {
           "token": {
@@ -1659,18 +1501,51 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
             "description": "JWT Authentication Bearer token"
           },
-          "user": {
-            "description": "Authenticated student info",
+          "data": {
+            "description": "Authenticated user info",
             "allOf": [
               {
-                "$ref": "#/components/schemas/StudentResponseDto"
+                "$ref": "#/components/schemas/UserResponseDto"
               }
             ]
           }
         },
         "required": [
           "token",
-          "user"
+          "data"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "example": 1,
+            "description": "User ID to update"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "Updated full name"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "Updated email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "Pass@1234",
+            "description": "Updated password"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "10-digit mobile phone number"
+          }
+        },
+        "required": [
+          "id"
         ]
       }
     }

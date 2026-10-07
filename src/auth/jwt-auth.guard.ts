@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 export class JwtAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const token = request.headers['authorization'] || request.headers['Authorization'];
+    let token = request.headers['authorization'] || request.headers['Authorization'];
 
     if (!token) {
       const response = context.switchToHttp().getResponse();
@@ -15,6 +15,10 @@ export class JwtAuthGuard implements CanActivate {
         msg: 'No token provided',
       });
       return false;
+    }
+
+    if (typeof token === 'string' && token.startsWith('Bearer ')) {
+      token = token.slice(7).trim();
     }
 
     try {
