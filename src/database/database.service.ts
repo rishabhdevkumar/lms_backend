@@ -29,7 +29,8 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   async execute(sql: string, params: any[] = []): Promise<any> {
     try {
-      const [rows] = await this.pool.execute(sql, params);
+      const sanitizedParams = (params || []).map((p) => (p === undefined ? null : p));
+      const [rows] = await this.pool.execute(sql, sanitizedParams);
       return rows;
     } catch (error) {
       this.logger.error(`Database execute error for query "${sql}":`, error);
@@ -39,7 +40,8 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   async query(sql: string, params: any[] = []): Promise<any> {
     try {
-      const [rows] = await this.pool.query(sql, params);
+      const sanitizedParams = (params || []).map((p) => (p === undefined ? null : p));
+      const [rows] = await this.pool.query(sql, sanitizedParams);
       return rows;
     } catch (error) {
       this.logger.error(`Database query error for query "${sql}":`, error);

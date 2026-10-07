@@ -20,32 +20,41 @@ let StudentService = StudentService_1 = class StudentService {
         this.logger = new common_1.Logger(StudentService_1.name);
     }
     async quickAdd(c) {
-        if (!c.name || !c.email || !c.password) {
-            return { ok: false, msg: 'All fields are required' };
+        if (!c || !c.name || !c.email || !c.password) {
+            return { ok: false, msg: 'Name, email, and password are required' };
         }
         try {
-            const result = await this.db.execute('CALL sp_quick_student_add(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                c.roll_no,
-                c.name,
-                c.email,
-                c.password,
-                c.phone,
-                c.dob,
-                c.gender,
-                c.blood_group,
-                c.session_id,
-                c.course_id,
-                c.semester_id,
-                c.father_name,
-                c.father_mob_no,
-                c.mother_name,
-                c.other_mob_no,
-            ]);
-            return result[0][0];
+            const result = await this.db.execute('CALL sp_users_add(?, ?, ?)', [c.name, c.email, c.password]);
+            let responseObj = null;
+            if (Array.isArray(result)) {
+                for (const resultSet of result) {
+                    if (Array.isArray(resultSet) && resultSet.length > 0) {
+                        const firstRow = resultSet[0];
+                        if (firstRow && ('ok' in firstRow || 'msg' in firstRow)) {
+                            responseObj = firstRow;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!responseObj) {
+                responseObj = result?.[0]?.[0] || { ok: false, msg: 'No response from database' };
+            }
+            if (responseObj.ok !== undefined) {
+                responseObj.ok = Boolean(responseObj.ok);
+            }
+            if (typeof responseObj.data === 'string') {
+                try {
+                    responseObj.data = JSON.parse(responseObj.data);
+                }
+                catch (e) {
+                }
+            }
+            return responseObj;
         }
         catch (error) {
             this.logger.error('Error in quick_add student:', error);
-            return { ok: false, msg: 'An error occurred while adding student' };
+            return { ok: false, msg: 'An error occurred while adding student', error: error.message };
         }
     }
     async add(u) {
@@ -116,32 +125,49 @@ let StudentService = StudentService_1 = class StudentService {
         }
     }
     async authenticate(body) {
-        const { roll_no, password } = body;
-        if (!roll_no || !password) {
+        const identifier = body.email || body.roll_no;
+        const { password } = body;
+        if (!identifier || !password) {
             return { ok: false, msg: 'Fields are mandatory' };
         }
         try {
-            const rows = await this.db.execute('CALL sp_student_authenticate(?,?)', [
-                roll_no,
+            const rows = await this.db.execute('CALL sp_users_authenticate(?,?)', [
+                identifier,
                 password,
             ]);
             const authResult = rows[0]?.[0];
-            if (authResult && authResult.ok) {
+            if (authResult && (authResult.ok === true || authResult.ok === 1)) {
                 const secret = process.env.TOKEN_SECRET || 'your_secret_key';
-                const token = jwt.sign({ id: authResult.data.id, roll_no: authResult.data.roll_no }, secret, { expiresIn: '24h' });
-                authResult.data.token = token;
+                let userData = authResult.data;
+                if (typeof userData === 'string') {
+                    try {
+                        userData = JSON.parse(userData);
+                    }
+                    catch (e) {
+                    }
+                }
+                const payloadId = userData?.id || authResult.id;
+                const payloadRollNo = userData?.roll_no || authResult.roll_no;
+                const payloadEmail = userData?.email || authResult.email;
+                const token = jwt.sign({ id: payloadId, roll_no: payloadRollNo, email: payloadEmail }, secret, { expiresIn: '24h' });
+                if (typeof authResult.data === 'object' && authResult.data !== null) {
+                    authResult.data.token = token;
+                }
+                else {
+                    authResult.token = token;
+                }
                 return authResult;
             }
             return authResult || { ok: false, msg: 'Invalid credentials' };
         }
         catch (err) {
             this.logger.error('Error in student authenticate:', err);
-            return { ok: false, msg: 'Server error' };
+            return { ok: false, msg: 'Server error', error: err.message };
         }
     }
     async getAll() {
         try {
-            const data = await this.db.execute('CALL sp_student_getall()', []);
+            const data = await this.db.execute('CALL sp_users_getall()', []);
             let students = data[0] || [];
             students = students.map((student) => {
                 if (student.dob) {
@@ -162,7 +188,7 @@ let StudentService = StudentService_1 = class StudentService {
     }
     async details(studentId) {
         try {
-            const rows = await this.db.execute('CALL sp_student_get_by_id(?)', [studentId]);
+            const rows = await this.db.execute('CALL sp_users_get_by_id(?)', [Number(studentId) || studentId]);
             if (rows[0] && rows[0].length > 0) {
                 return { ok: true, data: rows[0][0] };
             }

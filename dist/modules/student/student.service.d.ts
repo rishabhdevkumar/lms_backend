@@ -1,9 +1,10 @@
 import { DatabaseService } from '../../database/database.service';
+import { QuickAddStudentDto } from './dto/student.dto';
 export declare class StudentService {
     private readonly db;
     private readonly logger;
     constructor(db: DatabaseService);
-    quickAdd(c: any): Promise<any>;
+    quickAdd(c: QuickAddStudentDto): Promise<any>;
     add(u: any): Promise<any>;
     authenticate(body: any): Promise<any>;
     getAll(): Promise<any>;

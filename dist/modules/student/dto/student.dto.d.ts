@@ -1,10 +1,11 @@
 export declare class QuickAddStudentDto {
-    name?: string;
-    email?: string;
-    phone?: string;
+    name: string;
+    email: string;
+    password: string;
 }
 export declare class AuthenticateStudentDto {
-    email: string;
+    roll_no?: string;
+    email?: string;
     password: string;
 }
 export declare class StudentResponseDto {
