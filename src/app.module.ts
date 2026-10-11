@@ -2,9 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
-import { AgentModule } from './modules/agent/agent.module';
-import { SubAgentModule } from './modules/sub-agent/sub-agent.module';
-import { BlockModule } from './modules/block/block.module';
 import { CategoryModule } from './modules/category/category.module';
 import { SubCategoryModule } from './modules/sub-category/sub-category.module';
 import { ChapterModule } from './modules/chapter/chapter.module';
@@ -23,7 +20,7 @@ import { SessionModule } from './modules/session/session.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { SyllabusModule } from './modules/syllabus/syllabus.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
-import { UniversityModule } from './modules/university/university.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -32,9 +29,6 @@ import { UniversityModule } from './modules/university/university.module';
     }),
     DatabaseModule,
     UsersModule,
-    AgentModule,
-    SubAgentModule,
-    BlockModule,
     CategoryModule,
     SubCategoryModule,
     ChapterModule,
@@ -53,7 +47,7 @@ import { UniversityModule } from './modules/university/university.module';
     SubjectModule,
     SyllabusModule,
     TimetableModule,
-    UniversityModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}

@@ -8,15 +8,14 @@ export class SubjectService {
   constructor(private readonly db: DatabaseService) {}
 
   async add(sub: any) {
-    if (!sub.course_id || !sub.semester_id || !sub.subject_name || !sub.short_name) {
+    if (!sub.course_id || !sub.semester_id || !sub.subject_name) {
       return { ok: false, msg: 'All fields are required' };
     }
     try {
-      const result = await this.db.execute('CALL sp_subject_add(?, ?, ?, ?)', [
+      const result = await this.db.execute('CALL sp_subject_add(?, ?, ?)', [
         sub.course_id,
         sub.semester_id,
         sub.subject_name,
-        sub.short_name,
       ]);
       return result[0][0];
     } catch (error) {
@@ -36,16 +35,15 @@ export class SubjectService {
   }
 
   async update(sub: any) {
-    if (!sub.id || !sub.course_id || !sub.semester_id || !sub.subject_name || !sub.short_name) {
+    if (!sub.id || !sub.course_id || !sub.semester_id || !sub.subject_name) {
       return { ok: false, msg: 'All data is mandatory' };
     }
     try {
-      const data = await this.db.execute('CALL sp_subject_update(?, ?, ?, ?, ?)', [
+      const data = await this.db.execute('CALL sp_subject_update(?, ?, ?, ?)', [
         sub.id,
         sub.course_id,
         sub.semester_id,
         sub.subject_name,
-        sub.short_name,
       ]);
       return { ok: true, result: data[0][0] };
     } catch (err) {
@@ -56,11 +54,10 @@ export class SubjectService {
 
   async search(c: any) {
     try {
-      const data = await this.db.execute('CALL sp_subject_search(?,?,?,?,?,?)', [
+      const data = await this.db.execute('CALL sp_subject_search(?,?,?,?,?)', [
         c.course_id ? parseInt(c.course_id) : null,
         c.semester_id ? parseInt(c.semester_id) : null,
         c.subject_name || null,
-        c.short_name || null,
         c.rc || 5,
         c.page || 1,
       ]);

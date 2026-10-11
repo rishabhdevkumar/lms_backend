@@ -13,9 +13,11 @@ export declare class UserResponseDto {
     roll_no: string;
     name: string;
     email: string;
+    role?: string;
 }
 export declare class UserAuthTokenResponseDto {
     token: string;
+    role?: string;
     data: UserResponseDto;
 }
 export declare class UpdateUserDto {
@@ -24,4 +26,9 @@ export declare class UpdateUserDto {
     email?: string;
     password?: string;
     phone?: string;
+}
+export declare class UpdatePasswordSelfDto {
+    id?: number | string;
+    uid?: number | string;
+    password: string;
 }

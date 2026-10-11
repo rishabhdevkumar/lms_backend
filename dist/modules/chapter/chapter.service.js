@@ -19,16 +19,15 @@ let ChapterService = ChapterService_1 = class ChapterService {
         this.logger = new common_1.Logger(ChapterService_1.name);
     }
     async add(c) {
-        if (!c.course_id || !c.semester_id || !c.subject_id || !c.chapter_name || !c.short_name) {
+        if (!c.course_id || !c.semester_id || !c.subject_id || !c.chapter_name) {
             return { ok: false, msg: 'All fields are required' };
         }
         try {
-            const result = await this.db.execute('CALL sp_chapter_add(?, ?, ?, ?, ?)', [
+            const result = await this.db.execute('CALL sp_chapter_add(?, ?, ?, ?)', [
                 c.course_id,
                 c.semester_id,
                 c.subject_id,
                 c.chapter_name,
-                c.short_name,
             ]);
             return result[0][0];
         }
@@ -48,17 +47,16 @@ let ChapterService = ChapterService_1 = class ChapterService {
         }
     }
     async update(ch) {
-        if (!ch.id || !ch.course_id || !ch.chapter_name || !ch.short_name) {
+        if (!ch.id || !ch.course_id || !ch.chapter_name) {
             return { ok: false, msg: 'All data is mandatory' };
         }
         try {
-            const data = await this.db.execute('CALL sp_chapter_update(?, ?, ?, ?, ?, ?)', [
+            const data = await this.db.execute('CALL sp_chapter_update(?, ?, ?, ?, ?)', [
                 ch.id,
                 ch.course_id,
                 ch.semester_id,
                 ch.subject_id,
                 ch.chapter_name,
-                ch.short_name,
             ]);
             return { ok: true, result: data[0][0] };
         }
@@ -72,16 +70,14 @@ let ChapterService = ChapterService_1 = class ChapterService {
         const semesterId = c.semester_id && c.semester_id !== '' ? parseInt(c.semester_id) : null;
         const subjectId = c.subject_id && c.subject_id !== '' ? parseInt(c.subject_id) : null;
         const chapterName = c.chapter_name && c.chapter_name !== '' ? c.chapter_name : null;
-        const shortName = c.short_name && c.short_name !== '' ? c.short_name : null;
         const rc = c.rc ? parseInt(c.rc) : 5;
         const page = c.page ? parseInt(c.page) : 1;
         try {
-            const data = await this.db.execute('CALL sp_chapter_search(?, ?, ?, ?, ?, ?, ?)', [
+            const data = await this.db.execute('CALL sp_chapter_search(?, ?, ?, ?, ?, ?)', [
                 courseId,
                 semesterId,
                 subjectId,
                 chapterName,
-                shortName,
                 rc,
                 page,
             ]);

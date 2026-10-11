@@ -77,20 +77,34 @@ export class UsersService {
             } catch (e) {
             }
           }
+
+          if (typeof userData !== 'object' || userData === null) {
+            userData = {
+              id: authResult.id,
+              roll_no: authResult.roll_no,
+              name: authResult.name,
+              email: authResult.email,
+              role: authResult.role,
+            };
+          }
+
           const payloadId = userData?.id || authResult.id;
           const payloadRollNo = userData?.roll_no || authResult.roll_no;
           const payloadEmail = userData?.email || authResult.email;
+          const payloadRole = userData?.role || authResult.role;
 
           const token = jwt.sign(
-            { id: payloadId, roll_no: payloadRollNo, email: payloadEmail },
+            { id: payloadId, roll_no: payloadRollNo, email: payloadEmail, role: payloadRole },
             secret,
             { expiresIn: '24h' },
           );
-          if (typeof authResult.data === 'object' && authResult.data !== null) {
-            authResult.data.token = token;
-          } else {
-            authResult.token = token;
-          }
+
+          userData.token = token;
+          authResult.data = userData;
+          authResult.token = token;
+          authResult.role = payloadRole;
+          authResult.user = userData;
+
           return authResult;
         } else {
           authResult.ok = Boolean(authResult.ok);
@@ -175,6 +189,51 @@ export class UsersService {
       return { ok: false, msg: 'User not found' };
     } catch (error: any) {
       return { ok: false, msg: 'Database error: ' + error.message, user: {} };
+    }
+  }
+
+  async updatePasswordSelf(userId: any, password: string) {
+    if (!userId) {
+      return { ok: false, msg: 'User ID is required' };
+    }
+    if (!password || String(password).trim() === '') {
+      return { ok: false, msg: 'Password is required' };
+    }
+
+    try {
+      const result = await this.db.execute(
+        'CALL sp_user_update_password_self(?, ?)',
+        [Number(userId) || userId, String(password).trim()],
+      );
+
+      let responseObj: any = null;
+      if (Array.isArray(result)) {
+        for (const resultSet of result) {
+          if (Array.isArray(resultSet) && resultSet.length > 0) {
+            const firstRow = resultSet[0];
+            if (firstRow && ('ok' in firstRow || 'msg' in firstRow)) {
+              responseObj = firstRow;
+              break;
+            }
+          }
+        }
+      }
+
+      if (!responseObj) {
+        responseObj = result?.[0]?.[0];
+      }
+
+      if (responseObj) {
+        if (responseObj.ok !== undefined) {
+          responseObj.ok = Boolean(responseObj.ok);
+        }
+        return responseObj;
+      }
+
+      return { ok: true, msg: 'Password updated successfully' };
+    } catch (error: any) {
+      this.logger.error('Error in updatePasswordSelf:', error);
+      return { ok: false, msg: 'Failed to update password', error: error.message };
     }
   }
 }

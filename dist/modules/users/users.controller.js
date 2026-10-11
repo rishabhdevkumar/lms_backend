@@ -47,6 +47,10 @@ let UsersController = class UsersController {
     async getSelf(user) {
         return this.usersService.getSelf(user?.id);
     }
+    async updatePasswordSelf(user, body) {
+        const uid = user?.id || body?.id || body?.uid;
+        return this.usersService.updatePasswordSelf(uid, body.password);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -124,6 +128,20 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getSelf", null);
+__decorate([
+    (0, swagger_1.ApiBearerAuth)('JWT-auth'),
+    (0, swagger_1.ApiOperation)({ summary: 'Update password for authenticated user' }),
+    (0, swagger_1.ApiBody)({ type: users_dto_1.UpdatePasswordSelfDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Password update result' }),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)(['update_password_self', 'change_password_self']),
+    (0, common_1.Put)(['update_password_self', 'change_password_self']),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, users_dto_1.UpdatePasswordSelfDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updatePasswordSelf", null);
 exports.UsersController = UsersController = __decorate([
     (0, swagger_1.ApiTags)('Users'),
     (0, common_1.Controller)('users'),

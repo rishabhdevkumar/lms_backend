@@ -11,9 +11,6 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const database_module_1 = require("./database/database.module");
 const users_module_1 = require("./modules/users/users.module");
-const agent_module_1 = require("./modules/agent/agent.module");
-const sub_agent_module_1 = require("./modules/sub-agent/sub-agent.module");
-const block_module_1 = require("./modules/block/block.module");
 const category_module_1 = require("./modules/category/category.module");
 const sub_category_module_1 = require("./modules/sub-category/sub-category.module");
 const chapter_module_1 = require("./modules/chapter/chapter.module");
@@ -32,7 +29,7 @@ const session_module_1 = require("./modules/session/session.module");
 const subject_module_1 = require("./modules/subject/subject.module");
 const syllabus_module_1 = require("./modules/syllabus/syllabus.module");
 const timetable_module_1 = require("./modules/timetable/timetable.module");
-const university_module_1 = require("./modules/university/university.module");
+const notification_module_1 = require("./modules/notification/notification.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -44,9 +41,6 @@ exports.AppModule = AppModule = __decorate([
             }),
             database_module_1.DatabaseModule,
             users_module_1.UsersModule,
-            agent_module_1.AgentModule,
-            sub_agent_module_1.SubAgentModule,
-            block_module_1.BlockModule,
             category_module_1.CategoryModule,
             sub_category_module_1.SubCategoryModule,
             chapter_module_1.ChapterModule,
@@ -65,7 +59,7 @@ exports.AppModule = AppModule = __decorate([
             subject_module_1.SubjectModule,
             syllabus_module_1.SyllabusModule,
             timetable_module_1.TimetableModule,
-            university_module_1.UniversityModule,
+            notification_module_1.NotificationModule,
         ],
     })
 ], AppModule);
