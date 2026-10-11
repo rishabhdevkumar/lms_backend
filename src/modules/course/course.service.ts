@@ -8,14 +8,13 @@ export class CourseService {
   constructor(private readonly db: DatabaseService) {}
 
   async add(c: any) {
-    if (!c.session_id || !c.course_name || !c.short_name) {
+    if (!c.session_id || !c.course_name) {
       return { ok: false, msg: 'All fields are required' };
     }
     try {
-      const result = await this.db.execute('CALL sp_course_add(?, ?, ?)', [
+      const result = await this.db.execute('CALL sp_course_add(?, ?)', [
         c.session_id,
         c.course_name,
-        c.short_name,
       ]);
       return result[0][0];
     } catch (error) {
@@ -35,15 +34,14 @@ export class CourseService {
   }
 
   async update(course: any) {
-    if (!course.id || !course.session_id || !course.course_name || !course.short_name) {
+    if (!course.id || !course.session_id || !course.course_name) {
       return { ok: false, msg: 'All data is mandatory' };
     }
     try {
-      const data = await this.db.execute('CALL sp_course_update(?, ?, ?, ?)', [
+      const data = await this.db.execute('CALL sp_course_update(?, ?, ?)', [
         course.id,
         course.session_id,
         course.course_name,
-        course.short_name,
       ]);
       return { ok: true, result: data[0][0] };
     } catch (err) {
@@ -54,9 +52,8 @@ export class CourseService {
 
   async search(c: any) {
     try {
-      const data = await this.db.execute('CALL sp_course_search(?,?,?,?)', [
+      const data = await this.db.execute('CALL sp_course_search(?,?,?)', [
         c.course_name || '',
-        c.short_name || '',
         c.rc || 5,
         c.page || 1,
       ]);

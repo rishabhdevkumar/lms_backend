@@ -56,11 +56,17 @@ export class UserResponseDto {
 
   @ApiProperty({ example: 'john.doe@example.com', description: 'User email' })
   email: string;
+
+  @ApiPropertyOptional({ example: 'admin', description: 'User role' })
+  role?: string;
 }
 
 export class UserAuthTokenResponseDto {
   @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', description: 'JWT Authentication Bearer token' })
   token: string;
+
+  @ApiPropertyOptional({ example: 'admin', description: 'User role' })
+  role?: string;
 
   @ApiProperty({ type: () => UserResponseDto, description: 'Authenticated user info' })
   data: UserResponseDto;
@@ -94,4 +100,26 @@ export class UpdateUserDto {
   @IsString()
   @Matches(/^[0-9]{10}$/, { message: 'Phone number must contain exactly 10 digits' })
   phone?: string;
+}
+
+export class UpdatePasswordSelfDto {
+  @ApiPropertyOptional({ example: 1, description: 'Optional user ID (extracted automatically from JWT token if logged in)' })
+  @IsOptional()
+  id?: number | string;
+
+  @ApiPropertyOptional({ example: 1, description: 'Optional user ID alias' })
+  @IsOptional()
+  uid?: number | string;
+
+  @ApiProperty({
+    example: 'Pass@1234',
+    description: 'New password (at least 8 characters, one alphabet, one number, and one special character)',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
+  @Matches(/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/, {
+    message: 'Password must contain at least 8 characters, one alphabet, one number and one special character',
+  })
+  password: string;
 }

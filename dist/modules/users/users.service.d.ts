@@ -30,4 +30,5 @@ export declare class UsersService {
         msg: string;
         user: {};
     }>;
+    updatePasswordSelf(userId: any, password: string): Promise<any>;
 }

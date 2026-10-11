@@ -1,5 +1,5 @@
 import { UsersService } from './users.service';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto } from './dto/users.dto';
+import { AddUserDto, AuthenticateUserDto, UpdateUserDto, UpdatePasswordSelfDto } from './dto/users.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -30,4 +30,5 @@ export declare class UsersController {
         msg: string;
         user: {};
     }>;
+    updatePasswordSelf(user: any, body: UpdatePasswordSelfDto): Promise<any>;
 }

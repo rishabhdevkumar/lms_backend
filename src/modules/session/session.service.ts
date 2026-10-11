@@ -8,13 +8,12 @@ export class SessionService {
   constructor(private readonly db: DatabaseService) {}
 
   async add(c: any) {
-    if (!c.session_name || !c.short_name) {
+    if (!c.session_name) {
       return { ok: false, msg: 'All fields are required' };
     }
     try {
-      const result = await this.db.execute('CALL sp_session_add(?, ?)', [
+      const result = await this.db.execute('CALL sp_session_add(?)', [
         c.session_name,
-        c.short_name,
       ]);
       return result[0][0];
     } catch (error) {
@@ -34,14 +33,13 @@ export class SessionService {
   }
 
   async update(se: any) {
-    if (!se.id || !se.session_name || !se.short_name) {
+    if (!se.id || !se.session_name) {
       return { ok: false, msg: 'All data is mandatory' };
     }
     try {
-      const data = await this.db.execute('CALL sp_session_update(?, ?, ?)', [
+      const data = await this.db.execute('CALL sp_session_update(?, ?)', [
         se.id,
         se.session_name,
-        se.short_name,
       ]);
       return { ok: true, result: data[0][0] };
     } catch (err) {
@@ -52,9 +50,8 @@ export class SessionService {
 
   async search(s: any) {
     try {
-      const data = await this.db.execute('CALL sp_session_search(?,?,?,?)', [
+      const data = await this.db.execute('CALL sp_session_search(?,?,?)', [
         s.session_name || '',
-        s.short_name || '',
         s.rc || 5,
         s.page || 1,
       ]);

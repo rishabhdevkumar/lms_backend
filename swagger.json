@@ -295,70 +295,64 @@
         ]
       }
     },
-    "/agent/add": {
+    "/users/update_password_self": {
       "post": {
-        "operationId": "AgentController_addAgent",
+        "operationId": "UsersController_updatePasswordSelf",
+        "summary": "Update password for authenticated user",
         "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordSelfDto"
+              }
+            }
           }
-        }
+        },
+        "responses": {
+          "200": {
+            "description": "Password update result"
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
       }
     },
-    "/agent/getall": {
+    "/users/change_password_self": {
       "post": {
-        "operationId": "AgentController_getAll",
+        "operationId": "UsersController_updatePasswordSelf",
+        "summary": "Update password for authenticated user",
         "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordSelfDto"
+              }
+            }
           }
-        }
-      }
-    },
-    "/sub_agent/add": {
-      "post": {
-        "operationId": "SubAgentController_addSubAgent",
-        "parameters": [],
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Password update result"
           }
-        }
-      }
-    },
-    "/sub_agent/getall": {
-      "post": {
-        "operationId": "SubAgentController_getAll",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+        },
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
           }
-        }
-      }
-    },
-    "/block/add": {
-      "post": {
-        "operationId": "BlockController_addBlock",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/block/getall": {
-      "post": {
-        "operationId": "BlockController_getAll",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        }
+        ]
       }
     },
     "/category/add": {
@@ -1365,26 +1359,191 @@
         }
       }
     },
-    "/university/add": {
+    "/notification/add": {
       "post": {
-        "operationId": "UniversityController_add",
+        "operationId": "NotificationController_add",
+        "summary": "Add a new notification",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddNotificationDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Notification"
+        ]
       }
     },
-    "/university/getall": {
+    "/notification/getall": {
       "post": {
-        "operationId": "UniversityController_getAll",
+        "operationId": "NotificationController_getAll",
+        "summary": "Get all notifications",
         "parameters": [],
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/getbyid/{id}": {
+      "post": {
+        "operationId": "NotificationController_getById",
+        "summary": "Get notification by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/getbyuserid/{userId}": {
+      "post": {
+        "operationId": "NotificationController_getByUserId",
+        "summary": "Get notifications by User ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/mark-as-read": {
+      "post": {
+        "operationId": "NotificationController_markAsRead",
+        "summary": "Mark single notification as read",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkAsReadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/mark-all-as-read": {
+      "post": {
+        "operationId": "NotificationController_markAllAsRead",
+        "summary": "Mark all notifications as read for a user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MarkAllAsReadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/update": {
+      "post": {
+        "operationId": "NotificationController_update",
+        "summary": "Update notification details",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNotificationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/notification/delete/{id}": {
+      "post": {
+        "operationId": "NotificationController_delete",
+        "summary": "Delete a notification",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Notification"
+        ]
       }
     }
   },
@@ -1465,6 +1624,11 @@
             "type": "string",
             "example": "john.doe@example.com",
             "description": "User email"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin",
+            "description": "User role"
           }
         },
         "required": [
@@ -1500,6 +1664,11 @@
             "type": "string",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
             "description": "JWT Authentication Bearer token"
+          },
+          "role": {
+            "type": "string",
+            "example": "admin",
+            "description": "User role"
           },
           "data": {
             "description": "Authenticated user info",
@@ -1546,6 +1715,115 @@
         },
         "required": [
           "id"
+        ]
+      },
+      "UpdatePasswordSelfDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "example": 1,
+            "description": "Optional user ID (extracted automatically from JWT token if logged in)"
+          },
+          "uid": {
+            "type": "object",
+            "example": 1,
+            "description": "Optional user ID alias"
+          },
+          "password": {
+            "type": "string",
+            "example": "Pass@1234",
+            "description": "New password (at least 8 characters, one alphabet, one number, and one special character)"
+          }
+        },
+        "required": [
+          "password"
+        ]
+      },
+      "AddNotificationDto": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Target user ID"
+          },
+          "title": {
+            "type": "string",
+            "example": "Assignment Reminder",
+            "description": "Notification title"
+          },
+          "message": {
+            "type": "string",
+            "example": "Your Math assignment is due tomorrow at 5 PM.",
+            "description": "Notification message text"
+          },
+          "type": {
+            "type": "string",
+            "example": "info",
+            "description": "Type of notification (e.g., info, warning, alert)"
+          }
+        },
+        "required": [
+          "user_id",
+          "title",
+          "message"
+        ]
+      },
+      "MarkAsReadDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Notification ID to mark as read"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "MarkAllAsReadDto": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "number",
+            "example": 1,
+            "description": "User ID whose notifications to mark as read"
+          }
+        },
+        "required": [
+          "user_id"
+        ]
+      },
+      "UpdateNotificationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Notification ID"
+          },
+          "title": {
+            "type": "string",
+            "example": "Updated Assignment Reminder",
+            "description": "Updated notification title"
+          },
+          "message": {
+            "type": "string",
+            "example": "Your Math assignment submission time has been extended.",
+            "description": "Updated message"
+          },
+          "type": {
+            "type": "string",
+            "example": "info",
+            "description": "Notification type"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "message"
         ]
       }
     }

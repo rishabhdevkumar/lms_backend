@@ -19,14 +19,13 @@ let CountryService = CountryService_1 = class CountryService {
         this.logger = new common_1.Logger(CountryService_1.name);
     }
     async add(c) {
-        if (!c.country_code || !c.country_name || !c.short_name) {
+        if (!c.country_code || !c.country_name) {
             return { ok: false, msg: 'All fields are required' };
         }
         try {
-            const result = await this.db.execute('CALL sp_country_add(?, ?, ?)', [
+            const result = await this.db.execute('CALL sp_country_add(?, ?)', [
                 c.country_code,
                 c.country_name,
-                c.short_name,
             ]);
             return result[0][0];
         }
@@ -46,15 +45,14 @@ let CountryService = CountryService_1 = class CountryService {
         }
     }
     async update(u) {
-        if (!u.id || !u.country_code || !u.country_name || !u.short_name) {
+        if (!u.id || !u.country_code || !u.country_name) {
             return { ok: false, msg: 'All data is mandatory' };
         }
         try {
-            const data = await this.db.execute('CALL sp_country_update(?,?,?,?)', [
+            const data = await this.db.execute('CALL sp_country_update(?,?,?)', [
                 u.id,
                 u.country_code,
                 u.country_name,
-                u.short_name,
             ]);
             return data[0];
         }
@@ -65,10 +63,9 @@ let CountryService = CountryService_1 = class CountryService {
     }
     async search(c) {
         try {
-            const data = await this.db.execute('CALL sp_country_search(?,?,?,?,?)', [
+            const data = await this.db.execute('CALL sp_country_search(?,?,?,?)', [
                 c.country_code || '',
                 c.country_name || '',
-                c.short_name || '',
                 c.rc || 5,
                 c.page || 1,
             ]);

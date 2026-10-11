@@ -19,14 +19,13 @@ let SemesterService = SemesterService_1 = class SemesterService {
         this.logger = new common_1.Logger(SemesterService_1.name);
     }
     async add(c) {
-        if (!c.course_id || !c.semester_name || !c.short_name) {
+        if (!c.course_id || !c.semester_name) {
             return { ok: false, msg: 'All fields are required' };
         }
         try {
-            const result = await this.db.execute('CALL sp_semester_add(?, ?, ?)', [
+            const result = await this.db.execute('CALL sp_semester_add(?, ?)', [
                 c.course_id,
                 c.semester_name,
-                c.short_name,
             ]);
             return result[0][0];
         }
@@ -46,15 +45,14 @@ let SemesterService = SemesterService_1 = class SemesterService {
         }
     }
     async update(sem) {
-        if (!sem.id || !sem.course_id || !sem.semester_name || !sem.short_name) {
+        if (!sem.id || !sem.course_id || !sem.semester_name) {
             return { ok: false, msg: 'All data is mandatory' };
         }
         try {
-            const data = await this.db.execute('CALL sp_semester_update(?, ?, ?, ?)', [
+            const data = await this.db.execute('CALL sp_semester_update(?, ?, ?)', [
                 sem.id,
                 sem.course_id,
                 sem.semester_name,
-                sem.short_name,
             ]);
             return { ok: true, result: data[0][0] };
         }
@@ -65,9 +63,8 @@ let SemesterService = SemesterService_1 = class SemesterService {
     }
     async search(sem) {
         try {
-            const data = await this.db.execute('CALL sp_semester_search(?,?,?,?)', [
+            const data = await this.db.execute('CALL sp_semester_search(?,?,?)', [
                 sem.semester_name || '',
-                sem.short_name || '',
                 sem.rc || 5,
                 sem.page || 1,
             ]);

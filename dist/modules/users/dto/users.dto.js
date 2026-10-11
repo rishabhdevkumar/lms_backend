@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateUserDto = exports.UserAuthTokenResponseDto = exports.UserResponseDto = exports.AuthenticateUserDto = exports.AddUserDto = void 0;
+exports.UpdatePasswordSelfDto = exports.UpdateUserDto = exports.UserAuthTokenResponseDto = exports.UserResponseDto = exports.AuthenticateUserDto = exports.AddUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class AddUserDto {
@@ -82,6 +82,10 @@ __decorate([
     (0, swagger_1.ApiProperty)({ example: 'john.doe@example.com', description: 'User email' }),
     __metadata("design:type", String)
 ], UserResponseDto.prototype, "email", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'admin', description: 'User role' }),
+    __metadata("design:type", String)
+], UserResponseDto.prototype, "role", void 0);
 class UserAuthTokenResponseDto {
 }
 exports.UserAuthTokenResponseDto = UserAuthTokenResponseDto;
@@ -89,6 +93,10 @@ __decorate([
     (0, swagger_1.ApiProperty)({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', description: 'JWT Authentication Bearer token' }),
     __metadata("design:type", String)
 ], UserAuthTokenResponseDto.prototype, "token", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'admin', description: 'User role' }),
+    __metadata("design:type", String)
+], UserAuthTokenResponseDto.prototype, "role", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ type: () => UserResponseDto, description: 'Authenticated user info' }),
     __metadata("design:type", UserResponseDto)
@@ -129,4 +137,30 @@ __decorate([
     (0, class_validator_1.Matches)(/^[0-9]{10}$/, { message: 'Phone number must contain exactly 10 digits' }),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "phone", void 0);
+class UpdatePasswordSelfDto {
+}
+exports.UpdatePasswordSelfDto = UpdatePasswordSelfDto;
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 1, description: 'Optional user ID (extracted automatically from JWT token if logged in)' }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], UpdatePasswordSelfDto.prototype, "id", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 1, description: 'Optional user ID alias' }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], UpdatePasswordSelfDto.prototype, "uid", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        example: 'Pass@1234',
+        description: 'New password (at least 8 characters, one alphabet, one number, and one special character)',
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(200),
+    (0, class_validator_1.Matches)(/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/, {
+        message: 'Password must contain at least 8 characters, one alphabet, one number and one special character',
+    }),
+    __metadata("design:type", String)
+], UpdatePasswordSelfDto.prototype, "password", void 0);
 //# sourceMappingURL=users.dto.js.map

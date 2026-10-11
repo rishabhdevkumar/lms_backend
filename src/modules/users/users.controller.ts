@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiBody, ApiParam } 
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto, UserResponseDto, UserAuthTokenResponseDto } from './dto/users.dto';
+import { AddUserDto, AuthenticateUserDto, UpdateUserDto, UserResponseDto, UserAuthTokenResponseDto, UpdatePasswordSelfDto } from './dto/users.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -72,5 +72,20 @@ export class UsersController {
   @Post('get_self')
   async getSelf(@CurrentUser() user: any) {
     return this.usersService.getSelf(user?.id);
+  }
+
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Update password for authenticated user' })
+  @ApiBody({ type: UpdatePasswordSelfDto })
+  @ApiResponse({ status: 200, description: 'Password update result' })
+  @UseGuards(JwtAuthGuard)
+  @Post(['update_password_self', 'change_password_self'])
+  @Put(['update_password_self', 'change_password_self'])
+  async updatePasswordSelf(
+    @CurrentUser() user: any,
+    @Body() body: UpdatePasswordSelfDto,
+  ) {
+    const uid = user?.id || body?.id || body?.uid;
+    return this.usersService.updatePasswordSelf(uid, body.password);
   }
 }
