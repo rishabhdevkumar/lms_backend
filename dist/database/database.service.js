@@ -18,8 +18,8 @@ let DatabaseService = DatabaseService_1 = class DatabaseService {
         this.pool = mysql.createPool({
             host: process.env.DB_HOST || '127.0.0.1',
             user: process.env.DB_USER || 'root',
-            password: process.env.DB_PASSWORD || '',
-            database: process.env.DB_DATABASE || 'Management_project',
+            password: process.env.DB_PASSWORD || '@1234#1234',
+            database: process.env.DB_DATABASE || 'lms',
             port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
             waitForConnections: true,
             connectionLimit: 10,

@@ -3,7 +3,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiBody, ApiParam } 
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto, UserResponseDto, UserAuthTokenResponseDto, UpdatePasswordSelfDto } from './dto/users.dto';
+import { AddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto, UserResponseDto, UserAuthTokenResponseDto, UpdatePasswordSelfDto } from './dto/users.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -53,6 +53,15 @@ export class UsersController {
       body.id = paramId;
     }
     return this.usersService.update(body);
+  }
+
+  @ApiOperation({ summary: 'Change user status (Active / Inactive / Deactive)' })
+  @ApiBody({ type: ChangeUserStatusDto })
+  @ApiResponse({ status: 200, description: 'User status updated successfully' })
+  @Post(['status', 'change_status', 'toggle_status'])
+  @Put(['status', 'change_status'])
+  async changeStatus(@Body() body: ChangeUserStatusDto) {
+    return this.usersService.changeStatus(body.id, body.status);
   }
 
   @ApiOperation({ summary: 'Get user details by ID' })

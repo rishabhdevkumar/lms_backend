@@ -100,6 +100,11 @@ export class UpdateUserDto {
   @IsString()
   @Matches(/^[0-9]{10}$/, { message: 'Phone number must contain exactly 10 digits' })
   phone?: string;
+
+  @ApiPropertyOptional({ example: 'Active', description: 'User status (Active, Inactive, Deactive, Pending)' })
+  @IsOptional()
+  @IsString()
+  status?: string;
 }
 
 export class UpdatePasswordSelfDto {
@@ -122,4 +127,16 @@ export class UpdatePasswordSelfDto {
     message: 'Password must contain at least 8 characters, one alphabet, one number and one special character',
   })
   password: string;
+}
+
+
+export class ChangeUserStatusDto {
+  @ApiProperty({ example: 1, description: 'User ID' })
+  @IsNotEmpty()
+  id: string | number;
+
+  @ApiProperty({ example: 'Active', description: 'User status (Active, Inactive, Deactive, Pending)' })
+  @IsNotEmpty()
+  @IsString()
+  status: string;
 }

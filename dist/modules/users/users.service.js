@@ -124,6 +124,30 @@ let UsersService = UsersService_1 = class UsersService {
             return [];
         }
     }
+    async changeStatus(id, status) {
+        if (!id) {
+            return { ok: false, msg: 'User ID is required' };
+        }
+        const rawStatus = String(status || '').trim().toLowerCase();
+        let newStatus = 'Active';
+        if (rawStatus.includes('deact') || rawStatus.includes('inact') || rawStatus === 'suspended') {
+            newStatus = 'Deactive';
+        }
+        else if (rawStatus === 'pending') {
+            newStatus = 'Pending';
+        }
+        else {
+            newStatus = 'Active';
+        }
+        try {
+            await this.db.execute('UPDATE `users` SET `status` = ? WHERE `id` = ?', [newStatus, id]);
+            return { ok: true, msg: 'User status changed to ' + newStatus, status: newStatus };
+        }
+        catch (err) {
+            this.logger.error('Error changing user status:', err);
+            return { ok: false, msg: 'Failed to update user status in database', error: err.message };
+        }
+    }
     async update(dto) {
         if (!dto || !dto.id) {
             return { ok: false, msg: 'User ID is required' };

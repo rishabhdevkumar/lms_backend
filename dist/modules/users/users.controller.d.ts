@@ -1,5 +1,5 @@
 import { UsersService } from './users.service';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto, UpdatePasswordSelfDto } from './dto/users.dto';
+import { AddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto, UpdatePasswordSelfDto } from './dto/users.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -8,6 +8,22 @@ export declare class UsersController {
     getAll(): Promise<any>;
     updateRoot(body: UpdateUserDto): Promise<any>;
     update(body: UpdateUserDto, paramId?: string): Promise<any>;
+    changeStatus(body: ChangeUserStatusDto): Promise<{
+        ok: boolean;
+        msg: string;
+        status?: undefined;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        status: string;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+        status?: undefined;
+    }>;
     details(id: string): Promise<{
         ok: boolean;
         data: any;

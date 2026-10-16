@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import * as jwt from 'jsonwebtoken';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto } from './dto/users.dto';
+import { AddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto } from './dto/users.dto';
 
 @Injectable()
 export class UsersService {
@@ -125,6 +125,29 @@ export class UsersService {
     } catch (error: any) {
       this.logger.error('Error in users getall:', error);
       return [];
+    }
+  }
+
+
+  async changeStatus(id: any, status: string) {
+    if (!id) {
+      return { ok: false, msg: 'User ID is required' };
+    }
+    const rawStatus = String(status || '').trim().toLowerCase();
+    let newStatus = 'Active';
+    if (rawStatus.includes('deact') || rawStatus.includes('inact') || rawStatus === 'suspended') {
+      newStatus = 'Deactive';
+    } else if (rawStatus === 'pending') {
+      newStatus = 'Pending';
+    } else {
+      newStatus = 'Active';
+    }
+    try {
+      await this.db.execute('UPDATE `users` SET `status` = ? WHERE `id` = ?', [newStatus, id]);
+      return { ok: true, msg: 'User status changed to ' + newStatus, status: newStatus };
+    } catch (err: any) {
+      this.logger.error('Error changing user status:', err);
+      return { ok: false, msg: 'Failed to update user status in database', error: err.message };
     }
   }
 

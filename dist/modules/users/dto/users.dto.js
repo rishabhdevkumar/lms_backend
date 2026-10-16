@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdatePasswordSelfDto = exports.UpdateUserDto = exports.UserAuthTokenResponseDto = exports.UserResponseDto = exports.AuthenticateUserDto = exports.AddUserDto = void 0;
+exports.ChangeUserStatusDto = exports.UpdatePasswordSelfDto = exports.UpdateUserDto = exports.UserAuthTokenResponseDto = exports.UserResponseDto = exports.AuthenticateUserDto = exports.AddUserDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class AddUserDto {
@@ -137,6 +137,12 @@ __decorate([
     (0, class_validator_1.Matches)(/^[0-9]{10}$/, { message: 'Phone number must contain exactly 10 digits' }),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "phone", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ example: 'Active', description: 'User status (Active, Inactive, Deactive, Pending)' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateUserDto.prototype, "status", void 0);
 class UpdatePasswordSelfDto {
 }
 exports.UpdatePasswordSelfDto = UpdatePasswordSelfDto;
@@ -163,4 +169,18 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], UpdatePasswordSelfDto.prototype, "password", void 0);
+class ChangeUserStatusDto {
+}
+exports.ChangeUserStatusDto = ChangeUserStatusDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 1, description: 'User ID' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Object)
+], ChangeUserStatusDto.prototype, "id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Active', description: 'User status (Active, Inactive, Deactive, Pending)' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], ChangeUserStatusDto.prototype, "status", void 0);
 //# sourceMappingURL=users.dto.js.map
