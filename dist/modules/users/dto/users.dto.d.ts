@@ -26,9 +26,14 @@ export declare class UpdateUserDto {
     email?: string;
     password?: string;
     phone?: string;
+    status?: string;
 }
 export declare class UpdatePasswordSelfDto {
     id?: number | string;
     uid?: number | string;
     password: string;
+}
+export declare class ChangeUserStatusDto {
+    id: string | number;
+    status: string;
 }

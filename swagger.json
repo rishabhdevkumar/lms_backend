@@ -202,6 +202,81 @@
         ]
       }
     },
+    "/users/status": {
+      "post": {
+        "operationId": "UsersController_changeStatus",
+        "summary": "Change user status (Active / Inactive / Deactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/change_status": {
+      "post": {
+        "operationId": "UsersController_changeStatus",
+        "summary": "Change user status (Active / Inactive / Deactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/toggle_status": {
+      "post": {
+        "operationId": "UsersController_changeStatus",
+        "summary": "Change user status (Active / Inactive / Deactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/users/details/{id}": {
       "get": {
         "operationId": "UsersController_details",
@@ -1545,6 +1620,198 @@
           "Notification"
         ]
       }
+    },
+    "/batches/add": {
+      "post": {
+        "operationId": "BatchesController_add",
+        "summary": "Create a new batch",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBatchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Batch created successfully"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/getall": {
+      "post": {
+        "operationId": "BatchesController_getAll",
+        "summary": "Get all batches with course and instructor info",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all batches"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/getbyid/{id}": {
+      "post": {
+        "operationId": "BatchesController_getById",
+        "summary": "Get batch by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch details"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/update": {
+      "post": {
+        "operationId": "BatchesController_update",
+        "summary": "Update batch details",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBatchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch updated successfully"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/delete/{id}": {
+      "post": {
+        "operationId": "BatchesController_delete",
+        "summary": "Delete a batch (cannot delete if students are enrolled)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch deleted successfully"
+          }
+        },
+        "tags": [
+          "Batches"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
+    },
+    "/batches/enroll-student": {
+      "post": {
+        "operationId": "BatchesController_enrollStudent",
+        "summary": "Enroll a student into a batch",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollStudentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Student enrolled successfully"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/remove-student": {
+      "post": {
+        "operationId": "BatchesController_removeStudent",
+        "summary": "Remove a student from a batch",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveStudentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Student removed successfully"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
+    },
+    "/batches/students/{id}": {
+      "post": {
+        "operationId": "BatchesController_getStudents",
+        "summary": "Get all enrolled students for a specific batch",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of students in the batch"
+          }
+        },
+        "tags": [
+          "Batches"
+        ]
+      }
     }
   },
   "info": {
@@ -1711,10 +1978,34 @@
             "type": "string",
             "example": "9876543210",
             "description": "10-digit mobile phone number"
+          },
+          "status": {
+            "type": "string",
+            "example": "Active",
+            "description": "User status (Active, Inactive, Deactive, Pending)"
           }
         },
         "required": [
           "id"
+        ]
+      },
+      "ChangeUserStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "example": 1,
+            "description": "User ID"
+          },
+          "status": {
+            "type": "string",
+            "example": "Active",
+            "description": "User status (Active, Inactive, Deactive, Pending)"
+          }
+        },
+        "required": [
+          "id",
+          "status"
         ]
       },
       "UpdatePasswordSelfDto": {
@@ -1824,6 +2115,164 @@
           "id",
           "title",
           "message"
+        ]
+      },
+      "AddBatchDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 6,
+            "description": "Faculty / Instructor User ID"
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2026-11-01",
+            "description": "Batch start date (YYYY-MM-DD)"
+          },
+          "end_date": {
+            "type": "string",
+            "example": "2026-12-01",
+            "description": "Batch end date (YYYY-MM-DD)"
+          },
+          "start_time": {
+            "type": "string",
+            "example": "10:00:00",
+            "description": "Batch start time (HH:mm:ss)"
+          },
+          "end_time": {
+            "type": "string",
+            "example": "12:00:00",
+            "description": "Batch end time (HH:mm:ss)"
+          },
+          "room": {
+            "type": "string",
+            "example": "Lab 101",
+            "description": "Room / Class designation"
+          },
+          "status": {
+            "type": "string",
+            "example": "upcoming",
+            "enum": [
+              "active",
+              "upcoming",
+              "completed"
+            ],
+            "description": "Initial batch status"
+          }
+        },
+        "required": [
+          "course_id",
+          "users_id"
+        ]
+      },
+      "UpdateBatchDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Batch ID"
+          },
+          "batch_code": {
+            "type": "string",
+            "example": "BAT001",
+            "description": "Batch Code"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 6,
+            "description": "Faculty / Instructor User ID"
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2026-11-01",
+            "description": "Batch start date (YYYY-MM-DD)"
+          },
+          "end_date": {
+            "type": "string",
+            "example": "2026-12-01",
+            "description": "Batch end date (YYYY-MM-DD)"
+          },
+          "start_time": {
+            "type": "string",
+            "example": "10:00:00",
+            "description": "Batch start time (HH:mm:ss)"
+          },
+          "end_time": {
+            "type": "string",
+            "example": "12:00:00",
+            "description": "Batch end time (HH:mm:ss)"
+          },
+          "room": {
+            "type": "string",
+            "example": "Lab 102",
+            "description": "Room / Class designation"
+          },
+          "status": {
+            "type": "string",
+            "example": "active",
+            "enum": [
+              "active",
+              "upcoming",
+              "completed"
+            ],
+            "description": "Batch status"
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "users_id",
+          "status"
+        ]
+      },
+      "EnrollStudentDto": {
+        "type": "object",
+        "properties": {
+          "batch_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Batch ID"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 2,
+            "description": "Student User ID"
+          }
+        },
+        "required": [
+          "batch_id",
+          "users_id"
+        ]
+      },
+      "RemoveStudentDto": {
+        "type": "object",
+        "properties": {
+          "batch_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Batch ID"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 2,
+            "description": "Student User ID"
+          }
+        },
+        "required": [
+          "batch_id",
+          "users_id"
         ]
       }
     }

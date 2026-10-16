@@ -7,6 +7,22 @@ export declare class UsersService {
     add(dto: AddUserDto): Promise<any>;
     authenticate(body: AuthenticateUserDto): Promise<any>;
     getAll(): Promise<any>;
+    changeStatus(id: any, status: string): Promise<{
+        ok: boolean;
+        msg: string;
+        status?: undefined;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        status: string;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+        status?: undefined;
+    }>;
     update(dto: UpdateUserDto): Promise<any>;
     details(userId: string): Promise<{
         ok: boolean;

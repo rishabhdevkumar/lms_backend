@@ -41,6 +41,9 @@ let UsersController = class UsersController {
         }
         return this.usersService.update(body);
     }
+    async changeStatus(body) {
+        return this.usersService.changeStatus(body.id, body.status);
+    }
     async details(id) {
         return this.usersService.details(id);
     }
@@ -105,6 +108,17 @@ __decorate([
     __metadata("design:paramtypes", [users_dto_1.UpdateUserDto, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Change user status (Active / Inactive / Deactive)' }),
+    (0, swagger_1.ApiBody)({ type: users_dto_1.ChangeUserStatusDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'User status updated successfully' }),
+    (0, common_1.Post)(['status', 'change_status', 'toggle_status']),
+    (0, common_1.Put)(['status', 'change_status']),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [users_dto_1.ChangeUserStatusDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "changeStatus", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Get user details by ID' }),
     (0, swagger_1.ApiParam)({ name: 'id', description: 'User ID', example: '1' }),

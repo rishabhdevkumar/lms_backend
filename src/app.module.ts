@@ -21,6 +21,7 @@ import { SubjectModule } from './modules/subject/subject.module';
 import { SyllabusModule } from './modules/syllabus/syllabus.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { BatchesModule } from './modules/batches/batches.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { NotificationModule } from './modules/notification/notification.module';
     SyllabusModule,
     TimetableModule,
     NotificationModule,
+    BatchesModule,
   ],
 })
 export class AppModule {}
