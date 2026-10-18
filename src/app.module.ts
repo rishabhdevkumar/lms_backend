@@ -22,6 +22,8 @@ import { SyllabusModule } from './modules/syllabus/syllabus.module';
 import { TimetableModule } from './modules/timetable/timetable.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { BatchesModule } from './modules/batches/batches.module';
+import { AttendanceModule } from './modules/attendance/attendance.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { BatchesModule } from './modules/batches/batches.module';
     TimetableModule,
     NotificationModule,
     BatchesModule,
+    AttendanceModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

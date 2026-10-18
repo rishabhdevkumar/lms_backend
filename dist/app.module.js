@@ -31,6 +31,7 @@ const syllabus_module_1 = require("./modules/syllabus/syllabus.module");
 const timetable_module_1 = require("./modules/timetable/timetable.module");
 const notification_module_1 = require("./modules/notification/notification.module");
 const batches_module_1 = require("./modules/batches/batches.module");
+const attendance_module_1 = require("./modules/attendance/attendance.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -62,6 +63,7 @@ exports.AppModule = AppModule = __decorate([
             timetable_module_1.TimetableModule,
             notification_module_1.NotificationModule,
             batches_module_1.BatchesModule,
+            attendance_module_1.AttendanceModule,
         ],
     })
 ], AppModule);

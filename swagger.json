@@ -1812,6 +1812,475 @@
           "Batches"
         ]
       }
+    },
+    "/attendance": {
+      "post": {
+        "operationId": "AttendanceController_add",
+        "summary": "Mark attendance for a student",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Attendance marked successfully"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      },
+      "get": {
+        "operationId": "AttendanceController_getAll",
+        "summary": "Get all attendance records",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all attendance records"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/add": {
+      "post": {
+        "operationId": "AttendanceController_add",
+        "summary": "Mark attendance for a student",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Attendance marked successfully"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/mark": {
+      "post": {
+        "operationId": "AttendanceController_add",
+        "summary": "Mark attendance for a student",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Attendance marked successfully"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/bulk-add": {
+      "post": {
+        "operationId": "AttendanceController_bulkAdd",
+        "summary": "Bulk mark attendance for multiple students",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkMarkAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Bulk attendance marked"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getall": {
+      "get": {
+        "operationId": "AttendanceController_getAll",
+        "summary": "Get all attendance records",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all attendance records"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getbyid/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getById",
+        "summary": "Get attendance record by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Attendance ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attendance details"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/update": {
+      "put": {
+        "operationId": "AttendanceController_update",
+        "summary": "Update attendance record",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAttendanceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attendance updated successfully"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/session/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getBySession",
+        "summary": "Get all attendance records for a specific session",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Session ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of attendance in the session"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getby-session/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getBySession",
+        "summary": "Get all attendance records for a specific session",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Session ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of attendance in the session"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/student/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getByStudent",
+        "summary": "Get attendance history for a specific student",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "example": 2,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student attendance history"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getby-student/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getByStudent",
+        "summary": "Get attendance history for a specific student",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "example": 2,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student attendance history"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/batch/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getByBatch",
+        "summary": "Get attendance records for a specific batch",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Batch ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attendance records for the batch"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getby-batch/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getByBatch",
+        "summary": "Get attendance records for a specific batch",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Batch ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attendance records for the batch"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/date": {
+      "post": {
+        "operationId": "AttendanceController_getByDate",
+        "summary": "Get attendance records by date (YYYY-MM-DD)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAttendanceByDateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attendance on specified date"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/date/{date}": {
+      "get": {
+        "operationId": "AttendanceController_getByDateParam",
+        "summary": "Get attendance records by date param (YYYY-MM-DD)",
+        "parameters": [
+          {
+            "name": "date",
+            "required": true,
+            "in": "path",
+            "description": "Date in YYYY-MM-DD format",
+            "schema": {
+              "example": "2026-10-16",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/percentage/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getPercentage",
+        "summary": "Get student attendance percentage and statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "example": 2,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student attendance percentage and statistics"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/getpercentage/{id}": {
+      "get": {
+        "operationId": "AttendanceController_getPercentage",
+        "summary": "Get student attendance percentage and statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "example": 2,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student attendance percentage and statistics"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ]
+      }
+    },
+    "/attendance/{id}": {
+      "delete": {
+        "operationId": "AttendanceController_delete",
+        "summary": "Delete an attendance record by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Attendance ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attendance record deleted"
+          }
+        },
+        "tags": [
+          "Attendance"
+        ],
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -2273,6 +2742,139 @@
         "required": [
           "batch_id",
           "users_id"
+        ]
+      },
+      "AddAttendanceDto": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Academic / Class Session ID"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 2,
+            "description": "Student User ID"
+          },
+          "status": {
+            "type": "string",
+            "example": "present",
+            "enum": [
+              "present",
+              "absent",
+              "late",
+              "excused"
+            ],
+            "description": "Attendance status: present, absent, late, or excused"
+          },
+          "marked_by": {
+            "type": "number",
+            "example": 6,
+            "description": "Faculty or Admin User ID who is marking the attendance"
+          }
+        },
+        "required": [
+          "session_id",
+          "users_id",
+          "status",
+          "marked_by"
+        ]
+      },
+      "StudentAttendanceItemDto": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "number",
+            "example": 2,
+            "description": "Student User ID"
+          },
+          "status": {
+            "type": "string",
+            "example": "present",
+            "enum": [
+              "present",
+              "absent",
+              "late",
+              "excused"
+            ],
+            "description": "Attendance status"
+          }
+        },
+        "required": [
+          "users_id",
+          "status"
+        ]
+      },
+      "BulkMarkAttendanceDto": {
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Session ID"
+          },
+          "marked_by": {
+            "type": "number",
+            "example": 6,
+            "description": "Faculty or Admin User ID marking attendance"
+          },
+          "attendances": {
+            "description": "List of students and their attendance status",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StudentAttendanceItemDto"
+            }
+          }
+        },
+        "required": [
+          "session_id",
+          "marked_by",
+          "attendances"
+        ]
+      },
+      "UpdateAttendanceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Attendance Record ID"
+          },
+          "status": {
+            "type": "string",
+            "example": "present",
+            "enum": [
+              "present",
+              "absent",
+              "late",
+              "excused"
+            ],
+            "description": "Updated attendance status: present, absent, late, or excused"
+          },
+          "marked_by": {
+            "type": "number",
+            "example": 6,
+            "description": "Faculty or Admin User ID updating the attendance"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "marked_by"
+        ]
+      },
+      "GetAttendanceByDateDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-10-16",
+            "description": "Date in YYYY-MM-DD format"
+          }
+        },
+        "required": [
+          "date"
         ]
       }
     }
