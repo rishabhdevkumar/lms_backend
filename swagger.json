@@ -2281,6 +2281,551 @@
           }
         ]
       }
+    },
+    "/payments/key": {
+      "get": {
+        "operationId": "PaymentsController_getPublicKey",
+        "summary": "Get public Razorpay Key ID for client checkout integration",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Razorpay Key ID and status"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/create-order": {
+      "post": {
+        "operationId": "PaymentsController_createPaymentOrder",
+        "summary": "Create a Razorpay payment order for course purchase",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created with Razorpay order details and DB order ID"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/verify": {
+      "post": {
+        "operationId": "PaymentsController_verifyPayment",
+        "summary": "Verify Razorpay signature, record payment, and activate enrollment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyPaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification result and enrollment details"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/orders/user/{userId}": {
+      "post": {
+        "operationId": "PaymentsController_getUserOrders",
+        "summary": "Get all payment orders for a user",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of payment orders"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/history/{orderId}": {
+      "post": {
+        "operationId": "PaymentsController_getPaymentsByOrderId",
+        "summary": "Get payment transaction records by internal order ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "required": true,
+            "in": "path",
+            "description": "Payment Order ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of payment transaction attempts"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/create": {
+      "post": {
+        "operationId": "PaymentsController_createEnrollment",
+        "summary": "Enroll student in a course directly (e.g. manual / offline enrollment)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEnrollmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Enrollment created"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/getall": {
+      "post": {
+        "operationId": "PaymentsController_getAllEnrollments",
+        "summary": "Get all course enrollments",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all course enrollments"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/user/{userId}": {
+      "post": {
+        "operationId": "PaymentsController_getUserEnrollments",
+        "summary": "Get enrollments for a specific user",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "description": "Student User ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user course enrollments"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/course/{courseId}": {
+      "post": {
+        "operationId": "PaymentsController_getCourseEnrollments",
+        "summary": "Get all enrollments for a specific course",
+        "parameters": [
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "description": "Course ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of course enrollments"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/check": {
+      "post": {
+        "operationId": "PaymentsController_checkEnrollment",
+        "summary": "Check if student is enrolled and has active paid access to course",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckEnrollmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access status and enrollment info"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/enrollments/update-status": {
+      "post": {
+        "operationId": "PaymentsController_updateEnrollmentStatus",
+        "summary": "Update enrollment payment status (pending, paid, failed, refunded)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEnrollmentStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status update result"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/course-details/add": {
+      "post": {
+        "operationId": "CourseDetailsController_create",
+        "summary": "Add a new course detail record",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCourseDetailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course details successfully created"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/getall": {
+      "get": {
+        "operationId": "CourseDetailsController_getAll",
+        "summary": "Get all course details",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all course details"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      },
+      "post": {
+        "operationId": "CourseDetailsController_getAllPost",
+        "summary": "Get all course details (POST fallback)",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all course details"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/active": {
+      "get": {
+        "operationId": "CourseDetailsController_getActive",
+        "summary": "Get all active/published course details",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of active course details"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/course/{courseId}": {
+      "get": {
+        "operationId": "CourseDetailsController_getByCourseId",
+        "summary": "Get course detail by course ID",
+        "parameters": [
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "description": "Course ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course detail for specified course ID"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/{id}": {
+      "get": {
+        "operationId": "CourseDetailsController_getById",
+        "summary": "Get course detail by detail record ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Course detail ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course detail record"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      },
+      "put": {
+        "operationId": "CourseDetailsController_update",
+        "summary": "Update course detail by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Course detail record ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourseDetailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course detail updated successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      },
+      "delete": {
+        "operationId": "CourseDetailsController_delete",
+        "summary": "Delete course detail by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Course detail record ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course detail deleted successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/update": {
+      "post": {
+        "operationId": "CourseDetailsController_updatePost",
+        "summary": "Update course detail record",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourseDetailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course detail updated successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/update-status": {
+      "post": {
+        "operationId": "CourseDetailsController_updateStatusPost",
+        "summary": "Update course detail active status",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourseDetailStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course detail status updated successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/{id}/status": {
+      "patch": {
+        "operationId": "CourseDetailsController_updateStatus",
+        "summary": "Update course detail active status by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Course detail record ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourseDetailStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course detail status updated successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
+    },
+    "/course-details/delete/{id}": {
+      "post": {
+        "operationId": "CourseDetailsController_deletePost",
+        "summary": "Delete course detail by ID (POST fallback)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Course detail record ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course detail deleted successfully"
+          }
+        },
+        "tags": [
+          "Course Details"
+        ]
+      }
     }
   },
   "info": {
@@ -2876,6 +3421,319 @@
         "required": [
           "date"
         ]
+      },
+      "CreatePaymentOrderDto": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Student User ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID to purchase"
+          },
+          "amount": {
+            "type": "number",
+            "example": 4999,
+            "description": "Amount in INR (e.g. 4999.00)"
+          },
+          "currency": {
+            "type": "string",
+            "example": "INR",
+            "default": "INR",
+            "description": "Currency code"
+          },
+          "receipt": {
+            "type": "string",
+            "example": "receipt_course_1_user_2",
+            "description": "Optional custom receipt identifier"
+          },
+          "notes": {
+            "type": "object",
+            "example": {
+              "batch_id": 1,
+              "student_name": "John Doe"
+            },
+            "description": "Additional notes or metadata"
+          }
+        },
+        "required": [
+          "users_id",
+          "course_id",
+          "amount"
+        ]
+      },
+      "VerifyPaymentDto": {
+        "type": "object",
+        "properties": {
+          "razorpay_order_id": {
+            "type": "string",
+            "example": "order_DBJOWzybf0sJbb",
+            "description": "Razorpay Order ID"
+          },
+          "razorpay_payment_id": {
+            "type": "string",
+            "example": "pay_29QQoUBi66xm2f",
+            "description": "Razorpay Payment ID"
+          },
+          "razorpay_signature": {
+            "type": "string",
+            "example": "9ef522640f25823a4d28d54529246dd099187ecf2e1a49f57fa3e6f0b005e83c",
+            "description": "Razorpay signature generated on client checkout"
+          },
+          "users_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Student User ID (optional fallback)"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID (optional fallback)"
+          },
+          "payment_method": {
+            "type": "string",
+            "example": "card",
+            "description": "Payment method (card, netbanking, upi, wallet)"
+          }
+        },
+        "required": [
+          "razorpay_order_id",
+          "razorpay_payment_id",
+          "razorpay_signature"
+        ]
+      },
+      "CreateEnrollmentDto": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Student User ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "payment_status": {
+            "type": "string",
+            "example": "paid",
+            "enum": [
+              "pending",
+              "paid",
+              "failed",
+              "refunded"
+            ],
+            "default": "pending",
+            "description": "Initial payment status for enrollment"
+          }
+        },
+        "required": [
+          "users_id",
+          "course_id"
+        ]
+      },
+      "CheckEnrollmentDto": {
+        "type": "object",
+        "properties": {
+          "users_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Student User ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          }
+        },
+        "required": [
+          "users_id",
+          "course_id"
+        ]
+      },
+      "UpdateEnrollmentStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Enrollment ID"
+          },
+          "payment_status": {
+            "type": "string",
+            "example": "paid",
+            "enum": [
+              "pending",
+              "paid",
+              "failed",
+              "refunded"
+            ],
+            "description": "Updated payment status"
+          }
+        },
+        "required": [
+          "id",
+          "payment_status"
+        ]
+      },
+      "CreateCourseDetailDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Associated Course ID"
+          },
+          "category": {
+            "type": "string",
+            "example": "Web Development",
+            "description": "Course category"
+          },
+          "title": {
+            "type": "string",
+            "example": "Complete Full-Stack Web Development Bootcamp",
+            "description": "Course title"
+          },
+          "description": {
+            "type": "string",
+            "example": "Learn HTML, CSS, JavaScript, Node.js, and Angular from scratch.",
+            "description": "Detailed description of the course"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://example.com/images/course-banner.jpg",
+            "description": "URL or path to course thumbnail image"
+          },
+          "badges_text": {
+            "type": "string",
+            "example": "Bestseller",
+            "description": "Badges text (e.g. Bestseller, Trending, New)"
+          },
+          "duration_hours": {
+            "type": "number",
+            "example": 45,
+            "default": 0,
+            "description": "Total duration in hours"
+          },
+          "total_lessons": {
+            "type": "number",
+            "example": 120,
+            "default": 0,
+            "description": "Total number of lessons"
+          },
+          "price": {
+            "type": "number",
+            "example": 4999,
+            "description": "Course price in INR"
+          },
+          "display_order": {
+            "type": "number",
+            "example": 1,
+            "default": 0,
+            "description": "Display order index for listing"
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "description": "Whether the course is active/published"
+          }
+        },
+        "required": [
+          "course_id",
+          "category",
+          "title",
+          "price"
+        ]
+      },
+      "UpdateCourseDetailDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Associated Course ID"
+          },
+          "category": {
+            "type": "string",
+            "example": "Web Development",
+            "description": "Course category"
+          },
+          "title": {
+            "type": "string",
+            "example": "Complete Full-Stack Web Development Bootcamp",
+            "description": "Course title"
+          },
+          "description": {
+            "type": "string",
+            "example": "Learn HTML, CSS, JavaScript, Node.js, and Angular from scratch.",
+            "description": "Detailed description of the course"
+          },
+          "image": {
+            "type": "string",
+            "example": "https://example.com/images/course-banner.jpg",
+            "description": "URL or path to course thumbnail image"
+          },
+          "badges_text": {
+            "type": "string",
+            "example": "Bestseller",
+            "description": "Badges text (e.g. Bestseller, Trending, New)"
+          },
+          "duration_hours": {
+            "type": "number",
+            "example": 45,
+            "default": 0,
+            "description": "Total duration in hours"
+          },
+          "total_lessons": {
+            "type": "number",
+            "example": 120,
+            "default": 0,
+            "description": "Total number of lessons"
+          },
+          "price": {
+            "type": "number",
+            "example": 4999,
+            "description": "Course price in INR"
+          },
+          "display_order": {
+            "type": "number",
+            "example": 1,
+            "default": 0,
+            "description": "Display order index for listing"
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true,
+            "default": true,
+            "description": "Whether the course is active/published"
+          },
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course Detail Record ID"
+          }
+        }
+      },
+      "UpdateCourseDetailStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course Detail Record ID"
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true,
+            "description": "Active status"
+          }
+        }
       }
     }
   }
