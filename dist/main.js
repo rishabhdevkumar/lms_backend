@@ -39,7 +39,7 @@ async function bootstrap() {
     catch (err) {
         logger.error('Failed to export swagger.json:', err);
     }
-    const port = process.env.APP_PORT || 3000;
+    const port = process.env.APP_PORT || 3001;
     await app.listen(port);
     logger.log(`NestJS Application is running on port: ${port}`);
     logger.log(`Swagger documentation UI available at: http://localhost:${port}/api/docs`);
