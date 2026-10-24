@@ -1,28 +1,66 @@
 import { UsersService } from './users.service';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto, UpdatePasswordSelfDto } from './dto/users.dto';
+import { AddUserDto, AdminAddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto, UpdatePasswordSelfDto } from './dto/users.dto';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
-    add(body: AddUserDto): Promise<any>;
-    authenticate(body: AuthenticateUserDto): Promise<any>;
-    getAll(): Promise<any>;
-    updateRoot(body: UpdateUserDto): Promise<any>;
-    update(body: UpdateUserDto, paramId?: string): Promise<any>;
-    changeStatus(body: ChangeUserStatusDto): Promise<{
+    add(body: AddUserDto): Promise<{
         ok: boolean;
+        success?: number;
         msg: string;
-        status?: undefined;
-        error?: undefined;
-    } | {
-        ok: boolean;
-        msg: string;
-        status: string;
-        error?: undefined;
+        message?: string;
+        data?: any;
     } | {
         ok: boolean;
         msg: string;
         error: any;
-        status?: undefined;
+    }>;
+    adminAdd(body: AdminAddUserDto): Promise<{
+        ok: boolean;
+        success?: number;
+        msg: string;
+        message?: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    authenticate(body: AuthenticateUserDto): Promise<any>;
+    getAll(): Promise<any>;
+    updateRoot(body: UpdateUserDto): Promise<{
+        ok: boolean;
+        success?: number;
+        msg: string;
+        message?: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    update(body: UpdateUserDto, paramId?: string): Promise<{
+        ok: boolean;
+        success?: number;
+        msg: string;
+        message?: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    changeStatus(body: ChangeUserStatusDto, paramId?: string): Promise<{
+        ok: boolean;
+        success?: number;
+        msg: string;
+        message?: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        success: number;
+        msg: string;
+        message: string;
+        error: any;
     }>;
     details(id: string): Promise<{
         ok: boolean;
@@ -46,5 +84,15 @@ export declare class UsersController {
         msg: string;
         user: {};
     }>;
-    updatePasswordSelf(user: any, body: UpdatePasswordSelfDto): Promise<any>;
+    updatePasswordSelf(user: any, body: UpdatePasswordSelfDto): Promise<{
+        ok: boolean;
+        success?: number;
+        msg: string;
+        message?: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
 }

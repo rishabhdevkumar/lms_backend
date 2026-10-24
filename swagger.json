@@ -4,7 +4,7 @@
     "/users": {
       "post": {
         "operationId": "UsersController_add",
-        "summary": "Add a new user",
+        "summary": "Add a new user (Self-registration or full registration if roll_no provided)",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -57,7 +57,7 @@
       },
       "put": {
         "operationId": "UsersController_updateRoot",
-        "summary": "Update existing user",
+        "summary": "Update existing user profile and academic details",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -82,7 +82,7 @@
     "/users/add": {
       "post": {
         "operationId": "UsersController_add",
-        "summary": "Add a new user",
+        "summary": "Add a new user (Self-registration or full registration if roll_no provided)",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -97,6 +97,70 @@
         "responses": {
           "201": {
             "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/admin_add": {
+      "post": {
+        "operationId": "UsersController_adminAdd",
+        "summary": "Admin add new user with complete academic & profile details",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAddUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully by admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/admin/add": {
+      "post": {
+        "operationId": "UsersController_adminAdd",
+        "summary": "Admin add new user with complete academic & profile details",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAddUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully by admin",
             "content": {
               "application/json": {
                 "schema": {
@@ -171,12 +235,13 @@
     "/users/update": {
       "post": {
         "operationId": "UsersController_update",
-        "summary": "Update existing user",
+        "summary": "Update existing user profile and academic details",
         "parameters": [
           {
             "name": "id",
-            "required": true,
+            "required": false,
             "in": "path",
+            "description": "User ID (optional if specified in body)",
             "schema": {
               "type": "string"
             }
@@ -205,8 +270,18 @@
     "/users/status": {
       "post": {
         "operationId": "UsersController_changeStatus",
-        "summary": "Change user status (Active / Inactive / Deactive)",
-        "parameters": [],
+        "summary": "Toggle user active status (1 = Active, 0 = Locked / Deactive)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "path",
+            "description": "User ID (optional if specified in body)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -230,8 +305,18 @@
     "/users/change_status": {
       "post": {
         "operationId": "UsersController_changeStatus",
-        "summary": "Change user status (Active / Inactive / Deactive)",
-        "parameters": [],
+        "summary": "Toggle user active status (1 = Active, 0 = Locked / Deactive)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "path",
+            "description": "User ID (optional if specified in body)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -255,8 +340,88 @@
     "/users/toggle_status": {
       "post": {
         "operationId": "UsersController_changeStatus",
-        "summary": "Change user status (Active / Inactive / Deactive)",
-        "parameters": [],
+        "summary": "Toggle user active status (1 = Active, 0 = Locked / Deactive)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "path",
+            "description": "User ID (optional if specified in body)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/status/{id}": {
+      "post": {
+        "operationId": "UsersController_changeStatus",
+        "summary": "Toggle user active status (1 = Active, 0 = Locked / Deactive)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "path",
+            "description": "User ID (optional if specified in body)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeUserStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User status updated successfully"
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/toggle_status/{id}": {
+      "post": {
+        "operationId": "UsersController_changeStatus",
+        "summary": "Toggle user active status (1 = Active, 0 = Locked / Deactive)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": false,
+            "in": "path",
+            "description": "User ID (optional if specified in body)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -558,88 +723,617 @@
         }
       }
     },
+    "/chapter": {
+      "post": {
+        "operationId": "ChapterController_add",
+        "summary": "Add a new chapter",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddChapterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Chapter added successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "get": {
+        "operationId": "ChapterController_getAll",
+        "summary": "Get all active chapters",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active chapters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "put": {
+        "operationId": "ChapterController_update",
+        "summary": "Update an existing chapter",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChapterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter updated successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
     "/chapter/add": {
       "post": {
         "operationId": "ChapterController_add",
+        "summary": "Add a new chapter",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddChapterDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Chapter added successfully"
           }
-        }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
     "/chapter/getall": {
-      "post": {
+      "get": {
         "operationId": "ChapterController_getAll",
+        "summary": "Get all active chapters",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active chapters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChapterResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "post": {
+        "operationId": "ChapterController_getAllPost",
         "parameters": [],
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
     "/chapter/update": {
-      "post": {
+      "put": {
         "operationId": "ChapterController_update",
+        "summary": "Update an existing chapter",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChapterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter updated successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "post": {
+        "operationId": "ChapterController_updatePost",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChapterDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/{id}": {
+      "put": {
+        "operationId": "ChapterController_updateById",
+        "summary": "Update chapter by ID parameter",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Chapter ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChapterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter updated successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "get": {
+        "operationId": "ChapterController_getById",
+        "summary": "Get chapter by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Chapter ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chapter details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/{id}/update": {
+      "post": {
+        "operationId": "ChapterController_updateByIdPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChapterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
     "/chapter/search": {
       "post": {
         "operationId": "ChapterController_search",
+        "summary": "Search active chapters with pagination and filters",
         "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchChapterDto"
+              }
+            }
           }
-        }
+        },
+        "responses": {
+          "200": {
+            "description": "Filtered list of chapters"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      },
+      "get": {
+        "operationId": "ChapterController_searchGet",
+        "summary": "Search active chapters with query parameters",
+        "parameters": [
+          {
+            "name": "course_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Course ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "semester_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Semester ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "subject_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Subject ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "chapter_name",
+            "required": false,
+            "in": "query",
+            "description": "Search term in Chapter Name",
+            "schema": {
+              "example": "Calculus",
+              "type": "string"
+            }
+          },
+          {
+            "name": "short_name",
+            "required": false,
+            "in": "query",
+            "description": "Search term in Short Name",
+            "schema": {
+              "example": "Diff",
+              "type": "string"
+            }
+          },
+          {
+            "name": "rc",
+            "required": false,
+            "in": "query",
+            "description": "Record count per page",
+            "schema": {
+              "default": 10,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered list of chapters"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
     "/chapter/delete/{id}": {
       "post": {
         "operationId": "ChapterController_delete",
+        "summary": "Deactivate / Soft-delete a chapter",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Chapter ID to deactivate",
             "schema": {
+              "example": 1,
               "type": "string"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Chapter deactivated successfully"
           }
-        }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
-    "/chapter/get_by_id/{id}": {
+    "/chapter/{id}/delete": {
       "post": {
-        "operationId": "ChapterController_getById",
+        "operationId": "ChapterController_delete",
+        "summary": "Deactivate / Soft-delete a chapter",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Chapter ID to deactivate",
             "schema": {
+              "example": 1,
               "type": "string"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Chapter deactivated successfully"
           }
-        }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/subject/{subjectId}": {
+      "get": {
+        "operationId": "ChapterController_getBySubjectGet",
+        "summary": "Get active chapters by subject ID",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "required": true,
+            "in": "path",
+            "description": "Subject ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of chapters for specified subject"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/by_subject/{subjectId}": {
+      "get": {
+        "operationId": "ChapterController_getBySubjectGet",
+        "summary": "Get active chapters by subject ID",
+        "parameters": [
+          {
+            "name": "subjectId",
+            "required": true,
+            "in": "path",
+            "description": "Subject ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of chapters for specified subject"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/get_by_subject": {
+      "post": {
+        "operationId": "ChapterController_getBySubjectPost",
+        "summary": "Get active chapters by subject ID (POST body)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subject_id"
+                ],
+                "properties": {
+                  "subject_id": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of chapters for specified subject"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/by_subject": {
+      "post": {
+        "operationId": "ChapterController_getBySubjectPost",
+        "summary": "Get active chapters by subject ID (POST body)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subject_id"
+                ],
+                "properties": {
+                  "subject_id": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of chapters for specified subject"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/toggle_status": {
+      "post": {
+        "operationId": "ChapterController_toggleStatus",
+        "summary": "Toggle chapter active status (1 for active, 0 for inactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToggleChapterStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter status toggled successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
+      }
+    },
+    "/chapter/status": {
+      "post": {
+        "operationId": "ChapterController_toggleStatus",
+        "summary": "Toggle chapter active status (1 for active, 0 for inactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToggleChapterStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter status toggled successfully"
+          }
+        },
+        "tags": [
+          "Chapter"
+        ]
       }
     },
     "/city/add": {
@@ -1295,53 +1989,225 @@
         }
       }
     },
+    "/subject": {
+      "post": {
+        "operationId": "SubjectController_add",
+        "summary": "Add a new subject",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSubjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Subject added successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "get": {
+        "operationId": "SubjectController_getAll",
+        "summary": "Get all active subjects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active subjects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "put": {
+        "operationId": "SubjectController_update",
+        "summary": "Update an existing subject",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subject updated successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
     "/subject/add": {
       "post": {
         "operationId": "SubjectController_add",
+        "summary": "Add a new subject",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSubjectDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Subject added successfully"
           }
-        }
+        },
+        "tags": [
+          "Subject"
+        ]
       }
     },
     "/subject/getall": {
-      "post": {
+      "get": {
         "operationId": "SubjectController_getAll",
+        "summary": "Get all active subjects",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active subjects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubjectResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "post": {
+        "operationId": "SubjectController_getAllPost",
         "parameters": [],
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Subject"
+        ]
       }
     },
     "/subject/update": {
-      "post": {
+      "put": {
         "operationId": "SubjectController_update",
+        "summary": "Update an existing subject",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subject updated successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "post": {
+        "operationId": "SubjectController_updatePost",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Subject"
+        ]
       }
     },
-    "/subject/search": {
-      "post": {
-        "operationId": "SubjectController_search",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+    "/subject/{id}": {
+      "put": {
+        "operationId": "SubjectController_updateById",
+        "summary": "Update subject by ID parameter",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Subject ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
           }
-        }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subject updated successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
       }
     },
-    "/subject/delete/{id}": {
+    "/subject/{id}/update": {
       "post": {
-        "operationId": "SubjectController_delete",
+        "operationId": "SubjectController_updateByIdPost",
         "parameters": [
           {
             "name": "id",
@@ -1352,11 +2218,410 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/search": {
+      "post": {
+        "operationId": "SubjectController_search",
+        "summary": "Search active subjects with pagination and filters",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchSubjectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Filtered list of subjects"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "get": {
+        "operationId": "SubjectController_searchGet",
+        "summary": "Search active subjects with query parameters",
+        "parameters": [
+          {
+            "name": "course_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Course ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "semester_id",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Semester ID",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "subject_name",
+            "required": false,
+            "in": "query",
+            "description": "Search term in Subject Name",
+            "schema": {
+              "example": "Math",
+              "type": "string"
+            }
+          },
+          {
+            "name": "short_name",
+            "required": false,
+            "in": "query",
+            "description": "Search term in Short Name",
+            "schema": {
+              "example": "EM",
+              "type": "string"
+            }
+          },
+          {
+            "name": "rc",
+            "required": false,
+            "in": "query",
+            "description": "Record count per page",
+            "schema": {
+              "default": 10,
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "default": 1,
+              "example": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered list of subjects"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/delete/{id}": {
+      "post": {
+        "operationId": "SubjectController_delete",
+        "summary": "Deactivate / Soft-delete a subject",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Subject ID to deactivate",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subject deactivated successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/{id}/delete": {
+      "post": {
+        "operationId": "SubjectController_delete",
+        "summary": "Deactivate / Soft-delete a subject",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Subject ID to deactivate",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subject deactivated successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/course/{courseId}/semester/{semesterId}": {
+      "get": {
+        "operationId": "SubjectController_getByCourseSemesterGet",
+        "summary": "Get subjects by course ID and semester ID",
+        "parameters": [
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "description": "Course ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          },
+          {
+            "name": "semesterId",
+            "required": true,
+            "in": "path",
+            "description": "Semester ID",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subjects in specified course and semester"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/get_by_course_semester": {
+      "post": {
+        "operationId": "SubjectController_getByCourseSemester",
+        "summary": "Get subjects by course ID and semester ID (POST body)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetByCourseSemesterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of subjects in specified course and semester"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/by_course_semester": {
+      "post": {
+        "operationId": "SubjectController_getByCourseSemester",
+        "summary": "Get subjects by course ID and semester ID (POST body)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetByCourseSemesterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of subjects in specified course and semester"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/toggle_status": {
+      "post": {
+        "operationId": "SubjectController_toggleStatus",
+        "summary": "Toggle subject active status (1 for active, 0 for inactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToggleSubjectStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subject status toggled successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/status": {
+      "post": {
+        "operationId": "SubjectController_toggleStatus",
+        "summary": "Toggle subject active status (1 for active, 0 for inactive)",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToggleSubjectStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subject status toggled successfully"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/chapter_count": {
+      "get": {
+        "operationId": "SubjectController_getChapterCount",
+        "summary": "Get chapter count for all subjects or a specific subject",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subject_id",
+            "required": false,
+            "in": "query",
+            "description": "Optional Subject ID filter",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chapter count per subject"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      },
+      "post": {
+        "operationId": "SubjectController_getChapterCountPost",
+        "summary": "Get chapter count for all subjects or a specific subject (POST body)",
+        "parameters": [],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "subject_id": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter count per subject"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
+      }
+    },
+    "/subject/chapter_count/{id}": {
+      "get": {
+        "operationId": "SubjectController_getChapterCount",
+        "summary": "Get chapter count for all subjects or a specific subject",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subject_id",
+            "required": false,
+            "in": "query",
+            "description": "Optional Subject ID filter",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chapter count per subject"
+          }
+        },
+        "tags": [
+          "Subject"
+        ]
       }
     },
     "/syllabus/add": {
@@ -2851,6 +4116,11 @@
       "AddUserDto": {
         "type": "object",
         "properties": {
+          "roll_no": {
+            "type": "string",
+            "example": "STU001",
+            "description": "Unique roll number of the user"
+          },
           "name": {
             "type": "string",
             "example": "John Doe",
@@ -2866,6 +4136,31 @@
             "example": "Pass@1234",
             "description": "User password (at least 8 characters, one alphabet, one number, and one special character)"
           },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "10-digit mobile phone number"
+          },
+          "language": {
+            "type": "string",
+            "example": "en",
+            "description": "Preferred language code (e.g. en, hi)"
+          },
+          "dob": {
+            "type": "string",
+            "example": "2000-01-15",
+            "description": "Date of birth (YYYY-MM-DD)"
+          },
+          "gender": {
+            "type": "string",
+            "example": "Male",
+            "enum": [
+              "Male",
+              "Female",
+              "Other"
+            ],
+            "description": "Gender"
+          },
           "role": {
             "type": "string",
             "example": "student",
@@ -2875,6 +4170,66 @@
               "admin"
             ],
             "description": "User role"
+          },
+          "session_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Academic session ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "aadhar_no": {
+            "type": "string",
+            "example": "123456789012",
+            "description": "12-digit Aadhar number"
+          },
+          "father_name": {
+            "type": "string",
+            "example": "Robert Doe",
+            "description": "Father's full name"
+          },
+          "mother_name": {
+            "type": "string",
+            "example": "Jane Doe",
+            "description": "Mother's full name"
+          },
+          "board_10th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "10th Board name"
+          },
+          "total_marks_10th": {
+            "type": "number",
+            "example": 500,
+            "description": "Total marks in 10th"
+          },
+          "percentage_10th": {
+            "type": "number",
+            "example": 85.5,
+            "description": "Percentage in 10th"
+          },
+          "board_12th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "12th Board name"
+          },
+          "total_marks_12th": {
+            "type": "number",
+            "example": 480,
+            "description": "Total marks in 12th"
+          },
+          "percentage_12th": {
+            "type": "number",
+            "example": 82,
+            "description": "Percentage in 12th"
           }
         },
         "required": [
@@ -2906,6 +4261,11 @@
             "example": "john.doe@example.com",
             "description": "User email"
           },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "User phone number"
+          },
           "role": {
             "type": "string",
             "example": "admin",
@@ -2917,6 +4277,133 @@
           "roll_no",
           "name",
           "email"
+        ]
+      },
+      "AdminAddUserDto": {
+        "type": "object",
+        "properties": {
+          "roll_no": {
+            "type": "string",
+            "example": "STU001",
+            "description": "Unique roll number of the user"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "Full name of the user"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "Email address of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "Pass@1234",
+            "description": "User password (at least 8 characters, one alphabet, one number, and one special character)"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "10-digit mobile phone number"
+          },
+          "language": {
+            "type": "string",
+            "example": "en",
+            "description": "Preferred language code (max 5 chars)"
+          },
+          "dob": {
+            "type": "string",
+            "example": "2000-01-15",
+            "description": "Date of birth (YYYY-MM-DD)"
+          },
+          "gender": {
+            "type": "string",
+            "example": "Male",
+            "enum": [
+              "Male",
+              "Female",
+              "Other"
+            ],
+            "description": "Gender"
+          },
+          "role": {
+            "type": "string",
+            "example": "student",
+            "enum": [
+              "student",
+              "faculty",
+              "admin"
+            ],
+            "description": "User role"
+          },
+          "session_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Academic session ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "aadhar_no": {
+            "type": "string",
+            "example": "123456789012",
+            "description": "12-digit Aadhar number"
+          },
+          "father_name": {
+            "type": "string",
+            "example": "Robert Doe",
+            "description": "Father's full name"
+          },
+          "mother_name": {
+            "type": "string",
+            "example": "Jane Doe",
+            "description": "Mother's full name"
+          },
+          "board_10th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "10th Board name"
+          },
+          "total_marks_10th": {
+            "type": "number",
+            "example": 500,
+            "description": "Total marks obtained in 10th"
+          },
+          "percentage_10th": {
+            "type": "number",
+            "example": 85.5,
+            "description": "Percentage obtained in 10th"
+          },
+          "board_12th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "12th Board name"
+          },
+          "total_marks_12th": {
+            "type": "number",
+            "example": 480,
+            "description": "Total marks obtained in 12th"
+          },
+          "percentage_12th": {
+            "type": "number",
+            "example": 82,
+            "description": "Percentage obtained in 12th"
+          }
+        },
+        "required": [
+          "roll_no",
+          "name",
+          "email",
+          "password",
+          "phone"
         ]
       },
       "AuthenticateUserDto": {
@@ -2973,6 +4460,11 @@
             "example": 1,
             "description": "User ID to update"
           },
+          "roll_no": {
+            "type": "string",
+            "example": "STU001",
+            "description": "Roll number"
+          },
           "name": {
             "type": "string",
             "example": "John Doe",
@@ -2986,12 +4478,102 @@
           "password": {
             "type": "string",
             "example": "Pass@1234",
-            "description": "Updated password"
+            "description": "Updated password (at least 8 chars, one alphabet, one number, and one special character)"
+          },
+          "language": {
+            "type": "string",
+            "example": "en",
+            "description": "Preferred language code (max 5 chars)"
           },
           "phone": {
             "type": "string",
             "example": "9876543210",
             "description": "10-digit mobile phone number"
+          },
+          "dob": {
+            "type": "string",
+            "example": "2000-01-15",
+            "description": "Date of birth (YYYY-MM-DD)"
+          },
+          "gender": {
+            "type": "string",
+            "example": "Male",
+            "enum": [
+              "Male",
+              "Female",
+              "Other"
+            ],
+            "description": "Gender"
+          },
+          "role": {
+            "type": "string",
+            "example": "student",
+            "enum": [
+              "student",
+              "faculty",
+              "admin"
+            ],
+            "description": "User role"
+          },
+          "session_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Academic session ID"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "aadhar_no": {
+            "type": "string",
+            "example": "123456789012",
+            "description": "12-digit Aadhar number"
+          },
+          "father_name": {
+            "type": "string",
+            "example": "Robert Doe",
+            "description": "Father's full name"
+          },
+          "mother_name": {
+            "type": "string",
+            "example": "Jane Doe",
+            "description": "Mother's full name"
+          },
+          "board_10th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "10th Board name"
+          },
+          "total_marks_10th": {
+            "type": "number",
+            "example": 500,
+            "description": "Total marks in 10th"
+          },
+          "percentage_10th": {
+            "type": "number",
+            "example": 85.5,
+            "description": "Percentage in 10th"
+          },
+          "board_12th": {
+            "type": "string",
+            "example": "CBSE",
+            "description": "12th Board name"
+          },
+          "total_marks_12th": {
+            "type": "number",
+            "example": 480,
+            "description": "Total marks in 12th"
+          },
+          "percentage_12th": {
+            "type": "number",
+            "example": 82,
+            "description": "Percentage in 12th"
           },
           "status": {
             "type": "string",
@@ -3011,16 +4593,22 @@
             "example": 1,
             "description": "User ID"
           },
+          "user_id": {
+            "type": "object",
+            "example": 1,
+            "description": "User ID alias"
+          },
           "status": {
             "type": "string",
             "example": "Active",
             "description": "User status (Active, Inactive, Deactive, Pending)"
+          },
+          "is_active": {
+            "type": "object",
+            "example": 1,
+            "description": "Active status (1 = Active, 0 = Locked/Deactive)"
           }
-        },
-        "required": [
-          "id",
-          "status"
-        ]
+        }
       },
       "UpdatePasswordSelfDto": {
         "type": "object",
@@ -3043,6 +4631,383 @@
         },
         "required": [
           "password"
+        ]
+      },
+      "AddChapterDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID (optional, auto-resolved from subject if omitted)"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID (optional, auto-resolved from subject if omitted)"
+          },
+          "subject_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Subject ID"
+          },
+          "chapter_name": {
+            "type": "string",
+            "example": "Differential Calculus",
+            "description": "Chapter Name (required, max 255 chars)"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "Diff Calc",
+            "description": "Short Name (optional, max 45 chars)"
+          }
+        },
+        "required": [
+          "subject_id",
+          "chapter_name"
+        ]
+      },
+      "ChapterResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1
+          },
+          "subject_id": {
+            "type": "number",
+            "example": 1
+          },
+          "chapter_name": {
+            "type": "string",
+            "example": "Differential Calculus"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "Diff Calc"
+          },
+          "is_active": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "semester_id",
+          "subject_id",
+          "chapter_name",
+          "short_name"
+        ]
+      },
+      "UpdateChapterDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Chapter ID to update"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID (optional, auto-resolved from subject if omitted)"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID (optional, auto-resolved from subject if omitted)"
+          },
+          "subject_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Subject ID"
+          },
+          "chapter_name": {
+            "type": "string",
+            "example": "Differential Calculus",
+            "description": "Chapter Name (required, max 255 chars)"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "Diff Calc",
+            "description": "Short Name (optional, max 45 chars)"
+          }
+        },
+        "required": [
+          "id",
+          "subject_id",
+          "chapter_name"
+        ]
+      },
+      "SearchChapterDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Semester ID"
+          },
+          "subject_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Subject ID"
+          },
+          "chapter_name": {
+            "type": "string",
+            "example": "Calculus",
+            "description": "Search term in Chapter Name"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "Diff",
+            "description": "Search term in Short Name"
+          },
+          "rc": {
+            "type": "number",
+            "example": 10,
+            "default": 10,
+            "description": "Record count per page"
+          },
+          "page": {
+            "type": "number",
+            "example": 1,
+            "default": 1,
+            "description": "Page number"
+          }
+        }
+      },
+      "ToggleChapterStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Chapter ID"
+          },
+          "is_active": {
+            "type": "number",
+            "example": 1,
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Status: 1 for active, 0 for inactive"
+          }
+        },
+        "required": [
+          "id",
+          "is_active"
+        ]
+      },
+      "AddSubjectDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "subject_code": {
+            "type": "string",
+            "example": "SUB101",
+            "description": "Subject Code (optional, max 45 chars)"
+          },
+          "subject_name": {
+            "type": "string",
+            "example": "Engineering Mathematics",
+            "description": "Subject Name (required, max 45 chars)"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "EM-1",
+            "description": "Short Name (optional, max 45 chars)"
+          }
+        },
+        "required": [
+          "course_id",
+          "semester_id",
+          "subject_name"
+        ]
+      },
+      "SubjectResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1
+          },
+          "subject_code": {
+            "type": "string",
+            "example": "SUB101"
+          },
+          "subject_name": {
+            "type": "string",
+            "example": "Engineering Mathematics"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "EM-1"
+          },
+          "is_active": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "semester_id",
+          "subject_code",
+          "subject_name",
+          "short_name",
+          "is_active"
+        ]
+      },
+      "UpdateSubjectDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Subject ID to update"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "subject_code": {
+            "type": "string",
+            "example": "SUB101",
+            "description": "Subject Code (optional, max 45 chars)"
+          },
+          "subject_name": {
+            "type": "string",
+            "example": "Engineering Mathematics",
+            "description": "Subject Name (required, max 45 chars)"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "EM-1",
+            "description": "Short Name (optional, max 45 chars)"
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "semester_id",
+          "subject_name"
+        ]
+      },
+      "SearchSubjectDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Semester ID"
+          },
+          "subject_name": {
+            "type": "string",
+            "example": "Math",
+            "description": "Search term in Subject Name"
+          },
+          "short_name": {
+            "type": "string",
+            "example": "EM",
+            "description": "Search term in Short Name"
+          },
+          "rc": {
+            "type": "number",
+            "example": 10,
+            "default": 10,
+            "description": "Record count per page"
+          },
+          "page": {
+            "type": "number",
+            "example": 1,
+            "default": 1,
+            "description": "Page number"
+          }
+        }
+      },
+      "GetByCourseSemesterDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          }
+        },
+        "required": [
+          "course_id",
+          "semester_id"
+        ]
+      },
+      "ToggleSubjectStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Subject ID"
+          },
+          "is_active": {
+            "type": "number",
+            "example": 1,
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Status: 1 for active, 0 for inactive"
+          }
+        },
+        "required": [
+          "id",
+          "is_active"
         ]
       },
       "AddNotificationDto": {

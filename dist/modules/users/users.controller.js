@@ -26,6 +26,9 @@ let UsersController = class UsersController {
     async add(body) {
         return this.usersService.add(body);
     }
+    async adminAdd(body) {
+        return this.usersService.adminAdd(body);
+    }
     async authenticate(body) {
         return this.usersService.authenticate(body);
     }
@@ -41,8 +44,11 @@ let UsersController = class UsersController {
         }
         return this.usersService.update(body);
     }
-    async changeStatus(body) {
-        return this.usersService.changeStatus(body.id, body.status);
+    async changeStatus(body, paramId) {
+        if (paramId && !body.id && !body.user_id) {
+            body.id = paramId;
+        }
+        return this.usersService.toggleStatus(body);
     }
     async details(id) {
         return this.usersService.details(id);
@@ -57,7 +63,7 @@ let UsersController = class UsersController {
 };
 exports.UsersController = UsersController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Add a new user' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Add a new user (Self-registration or full registration if roll_no provided)' }),
     (0, swagger_1.ApiBody)({ type: users_dto_1.AddUserDto }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'User created successfully', type: users_dto_1.UserResponseDto }),
     (0, common_1.Post)(['', 'add']),
@@ -66,6 +72,16 @@ __decorate([
     __metadata("design:paramtypes", [users_dto_1.AddUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "add", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Admin add new user with complete academic & profile details' }),
+    (0, swagger_1.ApiBody)({ type: users_dto_1.AdminAddUserDto }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'User created successfully by admin', type: users_dto_1.UserResponseDto }),
+    (0, common_1.Post)(['admin_add', 'admin/add']),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [users_dto_1.AdminAddUserDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "adminAdd", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Authenticate user and return JWT token' }),
     (0, swagger_1.ApiBody)({ type: users_dto_1.AuthenticateUserDto }),
@@ -86,7 +102,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAll", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Update existing user' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Update existing user profile and academic details' }),
     (0, swagger_1.ApiBody)({ type: users_dto_1.UpdateUserDto }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'User updated successfully' }),
     (0, common_1.Put)(),
@@ -96,8 +112,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateRoot", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Update existing user' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Update existing user profile and academic details' }),
     (0, swagger_1.ApiBody)({ type: users_dto_1.UpdateUserDto }),
+    (0, swagger_1.ApiParam)({ name: 'id', required: false, description: 'User ID (optional if specified in body)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'User updated successfully' }),
     (0, common_1.Post)('update'),
     (0, common_1.Put)('update'),
@@ -109,14 +126,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'Change user status (Active / Inactive / Deactive)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Toggle user active status (1 = Active, 0 = Locked / Deactive)' }),
     (0, swagger_1.ApiBody)({ type: users_dto_1.ChangeUserStatusDto }),
+    (0, swagger_1.ApiParam)({ name: 'id', required: false, description: 'User ID (optional if specified in body)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'User status updated successfully' }),
-    (0, common_1.Post)(['status', 'change_status', 'toggle_status']),
-    (0, common_1.Put)(['status', 'change_status']),
+    (0, common_1.Post)(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id']),
+    (0, common_1.Put)(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id']),
+    (0, common_1.Patch)(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id']),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [users_dto_1.ChangeUserStatusDto]),
+    __metadata("design:paramtypes", [users_dto_1.ChangeUserStatusDto, String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "changeStatus", null);
 __decorate([

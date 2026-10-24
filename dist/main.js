@@ -12,6 +12,11 @@ async function bootstrap() {
     const logger = new common_1.Logger('Bootstrap');
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
+    app.useGlobalPipes(new common_1.ValidationPipe({
+        whitelist: false,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+    }));
     const config = new swagger_1.DocumentBuilder()
         .setTitle('LMS Backend API')
         .setDescription('NestJS REST API documentation for LMS Backend Management System')
