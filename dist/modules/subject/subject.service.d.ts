@@ -1,22 +1,48 @@
 import { DatabaseService } from '../../database/database.service';
+import { AddSubjectDto, UpdateSubjectDto, SearchSubjectDto, ToggleSubjectStatusDto } from './dto/subject.dto';
 export declare class SubjectService {
     private readonly db;
     private readonly logger;
     constructor(db: DatabaseService);
-    add(sub: any): Promise<any>;
-    getAll(): Promise<any>;
-    update(sub: any): Promise<{
+    private parseSpResponse;
+    add(dto: AddSubjectDto): Promise<{
         ok: boolean;
         msg: string;
-        result?: undefined;
+        data?: any;
     } | {
         ok: boolean;
-        result: any;
-        msg?: undefined;
+        msg: string;
+        error: any;
     }>;
-    search(c: any): Promise<any>;
-    delete(id: string): Promise<{
+    getAll(): Promise<any>;
+    update(dto: UpdateSubjectDto): Promise<{
         ok: boolean;
         msg: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
     }>;
+    search(c: SearchSubjectDto): Promise<any>;
+    delete(id: number | string): Promise<{
+        ok: boolean;
+        msg: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    getByCourseSemester(courseId: number | string, semesterId: number | string): Promise<any>;
+    toggleStatus(dto: ToggleSubjectStatusDto): Promise<{
+        ok: boolean;
+        msg: string;
+        data?: any;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    getChapterCount(subjectId?: number | string): Promise<any>;
 }

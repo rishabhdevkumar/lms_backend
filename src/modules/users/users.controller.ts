@@ -1,21 +1,39 @@
-import { Controller, Get, Post, Put, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { AddUserDto, AuthenticateUserDto, UpdateUserDto, ChangeUserStatusDto, UserResponseDto, UserAuthTokenResponseDto, UpdatePasswordSelfDto } from './dto/users.dto';
+import {
+  AddUserDto,
+  AdminAddUserDto,
+  AuthenticateUserDto,
+  UpdateUserDto,
+  ChangeUserStatusDto,
+  ToggleUserStatusDto,
+  UserResponseDto,
+  UserAuthTokenResponseDto,
+  UpdatePasswordSelfDto,
+} from './dto/users.dto';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
-  @ApiOperation({ summary: 'Add a new user' })
+  @ApiOperation({ summary: 'Add a new user (Self-registration or full registration if roll_no provided)' })
   @ApiBody({ type: AddUserDto })
   @ApiResponse({ status: 201, description: 'User created successfully', type: UserResponseDto })
   @Post(['', 'add'])
   async add(@Body() body: AddUserDto) {
     return this.usersService.add(body);
+  }
+
+  @ApiOperation({ summary: 'Admin add new user with complete academic & profile details' })
+  @ApiBody({ type: AdminAddUserDto })
+  @ApiResponse({ status: 201, description: 'User created successfully by admin', type: UserResponseDto })
+  @Post(['admin_add', 'admin/add'])
+  async adminAdd(@Body() body: AdminAddUserDto) {
+    return this.usersService.adminAdd(body);
   }
 
   @ApiOperation({ summary: 'Authenticate user and return JWT token' })
@@ -34,7 +52,7 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
-  @ApiOperation({ summary: 'Update existing user' })
+  @ApiOperation({ summary: 'Update existing user profile and academic details' })
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @Put()
@@ -42,8 +60,9 @@ export class UsersController {
     return this.usersService.update(body);
   }
 
-  @ApiOperation({ summary: 'Update existing user' })
+  @ApiOperation({ summary: 'Update existing user profile and academic details' })
   @ApiBody({ type: UpdateUserDto })
+  @ApiParam({ name: 'id', required: false, description: 'User ID (optional if specified in body)' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
   @Post('update')
   @Put('update')
@@ -55,13 +74,18 @@ export class UsersController {
     return this.usersService.update(body);
   }
 
-  @ApiOperation({ summary: 'Change user status (Active / Inactive / Deactive)' })
+  @ApiOperation({ summary: 'Toggle user active status (1 = Active, 0 = Locked / Deactive)' })
   @ApiBody({ type: ChangeUserStatusDto })
+  @ApiParam({ name: 'id', required: false, description: 'User ID (optional if specified in body)' })
   @ApiResponse({ status: 200, description: 'User status updated successfully' })
-  @Post(['status', 'change_status', 'toggle_status'])
-  @Put(['status', 'change_status'])
-  async changeStatus(@Body() body: ChangeUserStatusDto) {
-    return this.usersService.changeStatus(body.id, body.status);
+  @Post(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id'])
+  @Put(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id'])
+  @Patch(['status', 'change_status', 'toggle_status', 'status/:id', 'toggle_status/:id'])
+  async changeStatus(@Body() body: ChangeUserStatusDto, @Param('id') paramId?: string) {
+    if (paramId && !body.id && !body.user_id) {
+      body.id = paramId;
+    }
+    return this.usersService.toggleStatus(body);
   }
 
   @ApiOperation({ summary: 'Get user details by ID' })

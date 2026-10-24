@@ -1,23 +1,67 @@
 import { DatabaseService } from '../../database/database.service';
+import { AddChapterDto, UpdateChapterDto, SearchChapterDto, ToggleChapterStatusDto } from './dto/chapter.dto';
 export declare class ChapterService {
     private readonly db;
     private readonly logger;
     constructor(db: DatabaseService);
-    add(c: any): Promise<any>;
-    getAll(): Promise<any>;
-    update(ch: any): Promise<{
+    private parseSpResponse;
+    add(dto: AddChapterDto): Promise<{
         ok: boolean;
         msg: string;
-        result?: undefined;
+        data?: any;
+        affected?: number;
     } | {
         ok: boolean;
-        result: any;
-        msg?: undefined;
+        msg: string;
+        error: any;
     }>;
-    search(c: any): Promise<any>;
-    delete(id: string): Promise<{
+    getAll(): Promise<any>;
+    update(dto: UpdateChapterDto): Promise<{
         ok: boolean;
         msg: string;
+        data?: any;
+        affected?: number;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
     }>;
-    getById(id: string): Promise<any>;
+    search(c: SearchChapterDto): Promise<any>;
+    delete(id: number | string): Promise<{
+        ok: boolean;
+        msg: string;
+        data?: any;
+        affected?: number;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    getBySubject(subjectId: number | string): Promise<any>;
+    toggleStatus(dto: ToggleChapterStatusDto): Promise<{
+        ok: boolean;
+        msg: string;
+        data?: any;
+        affected?: number;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+    }>;
+    getById(id: number | string): Promise<{
+        ok: boolean;
+        msg: string;
+        data?: undefined;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        data: any;
+        msg?: undefined;
+        error?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        error: any;
+        data?: undefined;
+    }>;
 }
