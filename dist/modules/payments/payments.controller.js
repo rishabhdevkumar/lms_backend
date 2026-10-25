@@ -27,6 +27,9 @@ let PaymentsController = class PaymentsController {
     async createPaymentOrder(dto) {
         return this.paymentsService.createPaymentOrder(dto);
     }
+    async createDynamicUpiQr(orderId) {
+        return this.paymentsService.createDynamicUpiQr(orderId);
+    }
     async verifyPayment(dto) {
         return this.paymentsService.verifyPayment(dto);
     }
@@ -73,6 +76,13 @@ __decorate([
     __metadata("design:paramtypes", [dto_1.CreatePaymentOrderDto]),
     __metadata("design:returntype", Promise)
 ], PaymentsController.prototype, "createPaymentOrder", null);
+__decorate([
+    (0, common_1.Post)('create-qr/:orderId'),
+    __param(0, (0, common_1.Param)('orderId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "createDynamicUpiQr", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Verify Razorpay signature, record payment, and activate enrollment' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Verification result and enrollment details' }),

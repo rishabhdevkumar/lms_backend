@@ -2624,47 +2624,201 @@
         ]
       }
     },
+    "/syllabus": {
+      "post": {
+        "operationId": "SyllabusController_add",
+        "summary": "Add a new syllabus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSyllabusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Syllabus added successfully"
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
+      },
+      "get": {
+        "operationId": "SyllabusController_getAll",
+        "summary": "Get all active syllabi",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active syllabi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SyllabusResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
+      }
+    },
     "/syllabus/add": {
       "post": {
         "operationId": "SyllabusController_add",
+        "summary": "Add a new syllabus",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSyllabusDto"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Syllabus added successfully"
           }
-        }
+        },
+        "tags": [
+          "Syllabus"
+        ]
       }
     },
     "/syllabus/getall": {
-      "post": {
+      "get": {
         "operationId": "SyllabusController_getAll",
+        "summary": "Get all active syllabi",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of all active syllabi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SyllabusResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
+      },
+      "post": {
+        "operationId": "SyllabusController_getAllPost",
         "parameters": [],
         "responses": {
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Syllabus"
+        ]
       }
     },
     "/syllabus/update": {
       "post": {
         "operationId": "SyllabusController_update",
+        "summary": "Update an existing syllabus",
         "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSyllabusDto"
+              }
+            }
           }
-        }
+        },
+        "responses": {
+          "200": {
+            "description": "Syllabus updated successfully"
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
+      }
+    },
+    "/syllabus/search": {
+      "post": {
+        "operationId": "SyllabusController_search",
+        "summary": "Search syllabi with filters and pagination",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchSyllabusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results for syllabus"
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
+      }
+    },
+    "/syllabus/course-semester": {
+      "post": {
+        "operationId": "SyllabusController_getByCourseSemester",
+        "summary": "Get syllabus by Course ID and Semester ID",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetSyllabusByCourseSemesterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Syllabus by course and semester"
+          }
+        },
+        "tags": [
+          "Syllabus"
+        ]
       }
     },
     "/syllabus/delete/{id}": {
       "post": {
         "operationId": "SyllabusController_delete",
+        "summary": "Delete (soft-delete) a syllabus by ID",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
+            "description": "Syllabus ID",
             "schema": {
               "type": "string"
             }
@@ -2674,7 +2828,15 @@
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Syllabus"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/timetable/add": {
@@ -3580,6 +3742,29 @@
         "responses": {
           "201": {
             "description": "Order created with Razorpay order details and DB order ID"
+          }
+        },
+        "tags": [
+          "Payments"
+        ]
+      }
+    },
+    "/payments/create-qr/{orderId}": {
+      "post": {
+        "operationId": "PaymentsController_createDynamicUpiQr",
+        "parameters": [
+          {
+            "name": "orderId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
           }
         },
         "tags": [
@@ -5008,6 +5193,184 @@
         "required": [
           "id",
           "is_active"
+        ]
+      },
+      "AddSyllabusDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "syllabus_name": {
+            "type": "string",
+            "example": "Data Structures and Algorithms Syllabus",
+            "description": "Syllabus Name (min 3, max 100 chars)"
+          },
+          "syllabus": {
+            "type": "string",
+            "example": "Unit 1: Arrays & Linked Lists. Unit 2: Stacks & Queues...",
+            "description": "Syllabus content/description"
+          },
+          "syllabus_pdf": {
+            "type": "string",
+            "example": "uploads/syllabus/dsa_syllabus.pdf",
+            "description": "URL or path to Syllabus PDF (optional)"
+          }
+        },
+        "required": [
+          "course_id",
+          "semester_id",
+          "syllabus_name",
+          "syllabus"
+        ]
+      },
+      "SyllabusResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1
+          },
+          "course_name": {
+            "type": "string",
+            "example": "Computer Science & Engineering"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1
+          },
+          "semester_name": {
+            "type": "string",
+            "example": "1st Semester"
+          },
+          "syllabus_name": {
+            "type": "string",
+            "example": "Data Structures and Algorithms Syllabus"
+          },
+          "syllabus": {
+            "type": "string",
+            "example": "Unit 1: Arrays..."
+          },
+          "syllabus_pdf": {
+            "type": "string",
+            "example": "uploads/syllabus/dsa.pdf"
+          },
+          "is_active": {
+            "type": "number",
+            "example": 1
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "semester_id",
+          "syllabus_name",
+          "syllabus",
+          "is_active"
+        ]
+      },
+      "UpdateSyllabusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "Syllabus ID to update"
+          },
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          },
+          "syllabus_name": {
+            "type": "string",
+            "example": "Data Structures and Algorithms Syllabus",
+            "description": "Syllabus Name (min 3, max 100 chars)"
+          },
+          "syllabus": {
+            "type": "string",
+            "example": "Unit 1: Arrays & Linked Lists. Unit 2: Stacks & Queues...",
+            "description": "Syllabus content/description"
+          },
+          "syllabus_pdf": {
+            "type": "string",
+            "example": "uploads/syllabus/dsa_syllabus.pdf",
+            "description": "URL or path to Syllabus PDF (optional)"
+          }
+        },
+        "required": [
+          "id",
+          "course_id",
+          "semester_id",
+          "syllabus_name",
+          "syllabus"
+        ]
+      },
+      "SearchSyllabusDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Filter by Semester ID"
+          },
+          "syllabus_name": {
+            "type": "string",
+            "example": "Data Structures",
+            "description": "Search term in Syllabus Name"
+          },
+          "rc": {
+            "type": "number",
+            "example": 10,
+            "default": 10,
+            "description": "Record count per page"
+          },
+          "page": {
+            "type": "number",
+            "example": 1,
+            "default": 1,
+            "description": "Page number"
+          }
+        }
+      },
+      "GetSyllabusByCourseSemesterDto": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Course ID"
+          },
+          "semester_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Semester ID"
+          }
+        },
+        "required": [
+          "course_id",
+          "semester_id"
         ]
       },
       "AddNotificationDto": {

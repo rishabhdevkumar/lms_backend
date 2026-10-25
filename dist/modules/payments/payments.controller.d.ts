@@ -57,6 +57,40 @@ export declare class PaymentsController {
         razorpay_order?: undefined;
         key_id?: undefined;
     }>;
+    createDynamicUpiQr(orderId: number): Promise<{
+        ok: boolean;
+        msg: string;
+        order_id: any;
+        qr_id: any;
+        qr_image_url: any;
+        qr_expires_at: any;
+        amount: number;
+        currency: any;
+        order_number?: undefined;
+        qr_status?: undefined;
+    } | {
+        ok: boolean;
+        msg: string;
+        order_id: any;
+        order_number: any;
+        qr_id: any;
+        qr_image_url: any;
+        qr_expires_at: string;
+        amount: number;
+        currency: any;
+        qr_status: any;
+    } | {
+        ok: boolean;
+        msg: any;
+        order_id?: undefined;
+        qr_id?: undefined;
+        qr_image_url?: undefined;
+        qr_expires_at?: undefined;
+        amount?: undefined;
+        currency?: undefined;
+        order_number?: undefined;
+        qr_status?: undefined;
+    }>;
     verifyPayment(dto: VerifyPaymentDto): Promise<{
         ok: boolean;
         msg: string;
