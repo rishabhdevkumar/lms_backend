@@ -14,8 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SyllabusController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const syllabus_service_1 = require("./syllabus.service");
 const jwt_auth_guard_1 = require("../../auth/jwt-auth.guard");
+const dto_1 = require("./dto");
 let SyllabusController = class SyllabusController {
     constructor(syllabusService) {
         this.syllabusService = syllabusService;
@@ -26,8 +28,17 @@ let SyllabusController = class SyllabusController {
     async getAll() {
         return this.syllabusService.getAll();
     }
+    async getAllPost() {
+        return this.syllabusService.getAll();
+    }
     async update(body) {
         return this.syllabusService.update(body);
+    }
+    async search(body) {
+        return this.syllabusService.search(body);
+    }
+    async getByCourseSemester(body) {
+        return this.syllabusService.getByCourseSemester(body.course_id, body.semester_id);
     }
     async delete(id) {
         return this.syllabusService.delete(id);
@@ -35,26 +46,63 @@ let SyllabusController = class SyllabusController {
 };
 exports.SyllabusController = SyllabusController;
 __decorate([
-    (0, common_1.Post)('add'),
+    (0, swagger_1.ApiOperation)({ summary: 'Add a new syllabus' }),
+    (0, swagger_1.ApiBody)({ type: dto_1.AddSyllabusDto }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Syllabus added successfully' }),
+    (0, common_1.Post)(['', 'add']),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [dto_1.AddSyllabusDto]),
     __metadata("design:returntype", Promise)
 ], SyllabusController.prototype, "add", null);
 __decorate([
-    (0, common_1.Post)('getall'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get all active syllabi' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'List of all active syllabi', type: [dto_1.SyllabusResponseDto] }),
+    (0, common_1.Get)(['', 'getall']),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SyllabusController.prototype, "getAll", null);
 __decorate([
+    (0, common_1.Post)('getall'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SyllabusController.prototype, "getAllPost", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Update an existing syllabus' }),
+    (0, swagger_1.ApiBody)({ type: dto_1.UpdateSyllabusDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Syllabus updated successfully' }),
     (0, common_1.Post)('update'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [dto_1.UpdateSyllabusDto]),
     __metadata("design:returntype", Promise)
 ], SyllabusController.prototype, "update", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Search syllabi with filters and pagination' }),
+    (0, swagger_1.ApiBody)({ type: dto_1.SearchSyllabusDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Search results for syllabus' }),
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.SearchSyllabusDto]),
+    __metadata("design:returntype", Promise)
+], SyllabusController.prototype, "search", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Get syllabus by Course ID and Semester ID' }),
+    (0, swagger_1.ApiBody)({ type: dto_1.GetSyllabusByCourseSemesterDto }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Syllabus by course and semester' }),
+    (0, common_1.Post)('course-semester'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [dto_1.GetSyllabusByCourseSemesterDto]),
+    __metadata("design:returntype", Promise)
+], SyllabusController.prototype, "getByCourseSemester", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Delete (soft-delete) a syllabus by ID' }),
+    (0, swagger_1.ApiParam)({ name: 'id', description: 'Syllabus ID' }),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
@@ -63,6 +111,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SyllabusController.prototype, "delete", null);
 exports.SyllabusController = SyllabusController = __decorate([
+    (0, swagger_1.ApiTags)('Syllabus'),
     (0, common_1.Controller)('syllabus'),
     __metadata("design:paramtypes", [syllabus_service_1.SyllabusService])
 ], SyllabusController);

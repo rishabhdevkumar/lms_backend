@@ -60,6 +60,7 @@ async function bootstrap() {
   logger.log(`NestJS Application is running on port: ${port}`);
   logger.log(`Swagger documentation UI available at: http://localhost:${port}/api/docs`);
   logger.log(`OpenAPI JSON spec available at: http://localhost:${port}/api/docs-json`);
+  // console.log('Razorpay Key ID:', process.env.RAZORPAY_KEY_ID);
 }
 
 bootstrap();

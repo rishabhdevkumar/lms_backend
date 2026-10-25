@@ -143,6 +143,82 @@ let PaymentsService = PaymentsService_1 = class PaymentsService {
             };
         }
     }
+    async createDynamicUpiQr(orderId) {
+        try {
+            if (!this.razorpay || !this.keyId || !this.keySecret) {
+                return {
+                    ok: false,
+                    msg: 'Razorpay is not configured. Configure valid API keys first.',
+                };
+            }
+            const rows = await this.db.execute('SELECT * FROM payment_orders WHERE id = ? LIMIT 1', [orderId]);
+            const order = rows[0];
+            if (!order) {
+                return { ok: false, msg: 'Payment order not found' };
+            }
+            if (order.status === 'paid') {
+                return { ok: false, msg: 'This order has already been paid' };
+            }
+            if (order.gateway_qr_id && order.gateway_qr_image_url) {
+                return {
+                    ok: true,
+                    msg: 'QR already exists for this order',
+                    order_id: order.id,
+                    qr_id: order.gateway_qr_id,
+                    qr_image_url: order.gateway_qr_image_url,
+                    qr_expires_at: order.qr_expires_at,
+                    amount: Number(order.amount),
+                    currency: order.currency,
+                };
+            }
+            const closeBy = Math.floor(Date.now() / 1000) + 30 * 60;
+            const qr = await this.razorpay.qrCode.create({
+                type: 'upi_qr',
+                name: `LMS Order ${order.order_number}`,
+                usage: 'single_use',
+                fixed_amount: true,
+                payment_amount: Math.round(Number(order.amount) * 100),
+                description: `LMS course payment ${order.order_number}`,
+                close_by: closeBy,
+                notes: {
+                    local_order_id: String(order.id),
+                    users_id: String(order.users_id),
+                    course_id: String(order.course_id),
+                },
+            });
+            if (!qr?.id || !qr?.image_url) {
+                throw new Error('Razorpay did not return the QR ID or image URL');
+            }
+            const expiresAt = qr.close_by
+                ? new Date(Number(qr.close_by) * 1000)
+                    .toISOString()
+                    .slice(0, 19)
+                    .replace('T', ' ')
+                : null;
+            await this.db.execute('CALL sp_payment_orders_update_qr(?, ?, ?, ?)', [order.id, qr.id, qr.image_url, expiresAt]);
+            return {
+                ok: true,
+                msg: 'Dynamic UPI QR created successfully',
+                order_id: order.id,
+                order_number: order.order_number,
+                qr_id: qr.id,
+                qr_image_url: qr.image_url,
+                qr_expires_at: expiresAt,
+                amount: Number(order.amount),
+                currency: order.currency,
+                qr_status: qr.status,
+            };
+        }
+        catch (error) {
+            this.logger.error('Dynamic UPI QR creation failed', error?.message);
+            return {
+                ok: false,
+                msg: error?.error?.description ||
+                    error?.message ||
+                    'Failed to create Dynamic UPI QR',
+            };
+        }
+    }
     async verifyPayment(dto) {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = dto;
         if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {

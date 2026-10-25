@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param , ParseIntPipe,} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service';
 import {
@@ -12,7 +12,7 @@ import {
 @ApiTags('Payments')
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentsService: PaymentsService) { }
 
   @ApiOperation({ summary: 'Get public Razorpay Key ID for client checkout integration' })
   @ApiResponse({ status: 200, description: 'Razorpay Key ID and status' })
@@ -26,6 +26,13 @@ export class PaymentsController {
   @Post('create-order')
   async createPaymentOrder(@Body() dto: CreatePaymentOrderDto) {
     return this.paymentsService.createPaymentOrder(dto);
+  }
+
+  @Post('create-qr/:orderId')
+  async createDynamicUpiQr(
+    @Param('orderId', ParseIntPipe) orderId: number,
+  ) {
+    return this.paymentsService.createDynamicUpiQr(orderId);
   }
 
   @ApiOperation({ summary: 'Verify Razorpay signature, record payment, and activate enrollment' })
